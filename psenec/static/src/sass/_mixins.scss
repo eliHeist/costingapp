@@ -1,0 +1,42 @@
+/* MIXINS */
+@mixin xl {
+    @media (max-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin rxl {
+    @media (min-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (min-width: 640px) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin mdmax {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin rsm {
+    @media (max-width: 639px) {
+        @content;
+    }
+}
+
+@mixin dark {
+    @media (prefers-color-scheme: dark) {
+        @content;
+    }
+}

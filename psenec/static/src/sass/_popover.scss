@@ -1,0 +1,17 @@
+
+[popover]{
+    background-color: var(--grey-100);
+    @include dark{
+        background-color: var(--grey-900);
+    }
+
+    padding: 1.5rem;
+    border-radius: .5rem;
+
+    &::backdrop {
+        background-color: rgba(0,0,0,.5);
+        pointer-events: none;
+        cursor: default;
+    }
+}
+

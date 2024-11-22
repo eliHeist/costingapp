@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block slot2 %}
+<main class="h-screen grid content-center">
+    <h2 class="text-9xl font-bold text-center">403</h2>
+    <p class="text-center text-xl">
+        {% if exception %}
+        {{ exception }}
+        {% else %}
+        You dont have permission to view this page.
+        {% endif %}
+    </p>
+</main>
+{% endblock slot2 %}

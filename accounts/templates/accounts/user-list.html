@@ -1,0 +1,115 @@
+{% extends 'accounts/base.html' %} {% load custom_filters static %}
+
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+
+<div class="grid h-screen content-start">
+
+    <header title="Payment Actions" class="page_header">
+        <div class="flex gap-4 w-max">
+            <span class="font-bold text-2xl text-grey-600">Users</span>
+            <a title="Make new payment" href="{% url 'accounts:create' %}" class="btn">
+                <i class="fas fa-user-plus"></i>
+                Add User
+            </a>
+        </div>
+    </header>
+
+    <main class="scroll-container">
+        <main class="table" id="data_table" x-ref="data_table">
+            <section class="table__header">
+                <h2>Users list</h2>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Data...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="export__file" x-data='{ checked: false }'>
+                    <button id="export-file" class="export__file-btn" title="Export File"
+                        @click="checked=!checked"></button>
+                    <div class="export__file-options" :class="checked ? 'show' : ''">
+                        <header>Export As &nbsp; &#10140;</header>
+                        <button @click="checked=false;toPDF($refs.data_table)">PDF <img
+                                src="{% static 'images/pdf.png' %}" alt=""></button>
+                        <button @click="checked=false;downloadJSON($refs.data_table)">JSON <img
+                                src="{% static 'images/json.png' %}" alt=""></button>
+                        <button @click="checked=false;downloadCSV($refs.data_table)">CSV <img
+                                src="{% static 'images/csv.png' %}" alt=""></button>
+                        <button @click="checked=false;downloadEXCEL($refs.data_table, 'users')">EXCEL <img
+                                src="{% static 'images/excel.png' %}" alt=""></button>
+                    </div>
+                </div>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name <span class="icon-arrow">&UpArrow;</span></th>
+                            <th class="hidden lg:table-cell">Username <span class="icon-arrow">&UpArrow;</span></th>
+                            <th class="hidden md:table-cell">Role <span class="icon-arrow">&UpArrow;</span></th>
+                            <th class="hidden md:table-cell">Contacts <span class="icon-arrow">&UpArrow;</span></th>
+                            <th class="hidden xl:table-cell">Email <span class="icon-arrow">&UpArrow;</span></th>
+                            <th>
+                                <div class="text-right">Actions</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'accounts:detail' user.pk %}" class="flex items-center gap-3">
+                                    <figure class="hidden sm:grid">
+                                        <img src="
+                                        {% if user.profile_picture %}
+                                        {{ user.profile_picture.url }}
+                                        {% else %}
+                                        {% static 'images/profile.jpg' %}
+                                        {% endif %}
+                                        " alt="{{ user.get_full_name }}"
+                                            class="object-cover aspect-square rounded-full w-16">
+                                    </figure>
+                                    <h3 class="font-semibold">{{ user.get_full_name }}</h3>
+                                </a>
+                            </td>
+                            <td class="hidden lg:table-cell"><i class="fas fa-at mr-1"></i>{{ user.username }}</td>
+                            <td class="hidden md:table-cell">
+                                {% if user.is_superuser %}
+                                <p class="btn-action-sm">SUPER USER</p>
+                                {% elif user.is_technician %}
+                                <p class="btn-action-sm-green">Technician</p>
+                                {% else %}
+                                <p class="btn-action-sm-blue">User</p>
+                                {% endif %}
+                            </td>
+                            <td class="hidden md:table-cell">
+                                <span>{{ user.phone_1 }}</span>
+                            </td>
+                            <td class="hidden xl:table-cell">
+                                {% if user.email %}
+                                <span>{{ user.email }}</span>
+                                {% else %}
+                                <i class="fas fa-question-mark text-amber-500"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="flex justify-end gap-1">
+                                    <a title="Edit" href="{% url 'accounts:update' user.pk %}"
+                                        class="btn-action-amber"><i class="fas fa-pen-to-square"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        {% include 'base_components/footer.html' %}
+    </main>
+
+</div>
+
+{% endblock content %}

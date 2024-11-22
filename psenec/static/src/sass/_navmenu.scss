@@ -1,0 +1,116 @@
+
+.nav-menu{
+    display: grid;
+    row-gap: .5rem;
+    padding: .05rem;
+
+    &__group{
+        border-radius: .25rem;
+        overflow: hidden;
+        display: grid;
+
+        &[aria-expanded="true"]{
+            .nav-menu__group{
+                &__title{
+                    background-color: var(--grey-200);
+
+                    @include dark {
+                        background-color: var(--grey-700);
+                    }
+
+                    .chevron {
+                        rotate: -180deg;
+                    }
+                }
+                &__links{
+                    display: grid;
+                }
+            }
+        }
+        
+        &__title {
+            padding: .5rem;
+            display: flex;
+            column-gap: .5rem;
+            justify-content: stretch;
+            align-items: center;
+            border-radius: .25rem;
+            font-weight: 500;
+
+            .icon{
+                width: 2rem;
+            }
+
+            span {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex: 1;
+                padding-right: .5rem;
+            }
+
+            .chevron{
+                transition: all 300ms ease-in-out;
+            }
+
+            &:hover {
+                background-color: var(--grey-100);
+
+                @include dark {
+                    background-color: var(--grey-800);
+                }
+            }
+        }
+        
+        &__links{
+            display: none;
+            row-gap: .1rem;
+            margin-left: .5rem;
+        }
+        
+        &__link{
+            padding: .5rem;
+            display: flex;
+            column-gap: .5rem;
+            justify-content: stretch;
+            align-items: center;
+            border-radius: .25rem;
+            color: var(--grey-600);
+            @include dark {
+                color: var(--grey-400);
+            }
+            
+            .icon{
+                width: 1.5rem;
+                text-align: center;
+                font-size: .4rem;
+
+                color: var(--grey-400);
+
+                @include dark{
+                    color: var(--grey-700);
+                }
+            }
+
+            &:hover {
+                background-color: var(--grey-200);
+
+                @include dark {
+                    background-color: var(--grey-700);
+                }
+            }
+
+            &.active {
+                color: var(--black);
+
+                @include dark {
+                    color: var(--white);
+                }
+
+                .icon {
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+}

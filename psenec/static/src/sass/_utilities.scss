@@ -1,0 +1,37 @@
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--grey-100);
+    overflow-y: hidden;
+    overflow-x: auto;
+    padding-bottom: 1px;
+    
+    @include dark{
+        border-bottom: 2px solid var(--grey-700);
+    }
+
+    .active-tab {
+        color: var(--primary);
+        position: relative;
+        &:after{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            z-index: 2;
+            background-color: var(--primary);
+            content: '';
+            transform: translateY(2px);
+        }
+    }
+
+    button {
+        padding: .5rem 1rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        background: none;
+    }
+}

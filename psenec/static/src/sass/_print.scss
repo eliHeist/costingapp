@@ -1,0 +1,43 @@
+/* print */
+.paper-bounds{
+    width: 216mm;
+    min-height: 283mm;
+    margin: 0;
+    padding: 10mm;
+    background-image: url('../public/images/MBF STAMP.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: white;
+    color: black;
+    position: relative;
+
+    .paper-content{
+        position: absolute;
+        font-size: 14px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.968);
+        padding: 6mm 6mm 6mm 6mm;
+        
+    }
+}
+
+@media print{
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    .paper-bounds{
+        print-color-adjust: exact;
+        background-image: url('../public/images/MBF STAMP.png') !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-size: contain !important;
+        background-color: white !important;
+        color: black;
+    }
+}

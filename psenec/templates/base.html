@@ -1,0 +1,27 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block one %}
+{% block two %}{% endblock %}
+{% endblock %}
+
+{% block slot %}
+
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    <div class="body-wrapper">
+        <aside class="body-wrapper-nav">{% include 'base_components/nav.html' %}</aside>
+        <div class="body-wrapper-content main-container" x-data='{ mnyprc:false }'>
+            {% include 'base_components/bg-svg.html' %}
+            <div id="content-slot-2_loader" class="htmx-indicator full [background-color:rgba(0,0,0,0.5)]">
+                {% include 'components/loader.html' %}
+            </div>
+            <div id="content-slot-2">
+                {% block slot2 %}{% endblock slot2 %}
+            </div>
+        </div>
+    </div>
+
+    {% block scripts %}{% endblock scripts %}
+</body>
+{% endblock slot %}

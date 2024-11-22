@@ -1,0 +1,10 @@
+{% load static %}
+
+<aside class="body-wrapper-nav">{% include 'base_components/nav.html' %}</aside>
+<div class="body-wrapper-content main-container" x-data='{ mnyprc:false }'>
+    {% include 'base_components/bg-svg.html' %}
+    <div id="content-slot-2">
+        {% block slot2 %}{% endblock slot2 %}
+    </div>
+</div>
+    

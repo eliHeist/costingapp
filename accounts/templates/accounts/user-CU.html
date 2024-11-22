@@ -1,0 +1,52 @@
+{% extends 'accounts/base.html' %} {% load tailwind_filters static %}
+
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+
+<div x-data="{
+    load: true,
+    requestSubmit(){
+        const form = document.getElementById('userForm')
+        form.requestSubmit()
+    },
+    init(){
+        this.load = false
+    }
+}" class="h-screen grid content-start">
+
+    <div x-show="load" x-transition id="loading"
+        class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-75 grid place-content-center">
+        <i class="fas fa-circle-notch text-6xl animate-spin"></i>
+    </div>
+
+    <header title="Payment Actions" class="px-4 py-4">
+        <div class="flex gap-4">
+            <span class="font-bold text-2xl text-grey-600">User Form</span>
+            <a title="Users list" href="{% url 'accounts:list' %}" class="btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to list
+            </a>
+            <button title="Save" @click="requestSubmit()" class="btn-primary">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+        </div>
+    </header>
+
+    <main class="px-4 overflow-y-auto scroll-container">
+        <form method="post" enctype="multipart/form-data" class="cus-form grid gap-4" id="userForm">
+            <div id="token">{% csrf_token %}</div>
+            <table class="form-table w-fit">
+                {{ form.as_table }}
+            </table>
+        </form>
+        {% include 'base_components/footer.html' %}
+    </main>
+
+</div>
+
+{% endblock content %}

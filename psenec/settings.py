@@ -17,7 +17,7 @@ DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY') if DEBUG else get_random_secret_key()
 # get list of the urls
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-INTERNAL_IPS = env.list('INTERNAL_IPS')
+# INTERNAL_IPS = env.list('INTERNAL_IPS')
 
 
 # Application definition
@@ -31,9 +31,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # installed packages
+    'allauth',
+    'allauth.account',
     'storages',
-    'corsheaders',
-    'rest_framework',
     'crispy_forms',
     'crispy_tailwind',
     'django_filters',
@@ -46,6 +46,13 @@ INSTALLED_APPS = [
     'home',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # django cleanup should be last
 INSTALLED_APPS.append('django_cleanup.apps.CleanupConfig')
@@ -63,6 +70,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'django_htmx.middleware.HtmxMiddleware',
+
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'psenec.urls'
@@ -78,6 +88,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
         "loaders": [(

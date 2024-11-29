@@ -17,6 +17,9 @@ Thumbs.db
 !.env.test
 .venv/
 
+# log files
+*.log
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

@@ -33,17 +33,25 @@ INSTALLED_APPS = [
     # installed packages
     'allauth',
     'allauth.account',
-    'storages',
+    # 'storages',
     'crispy_forms',
     'crispy_tailwind',
-    'django_filters',
     'django_htmx',
     "template_partials",
     'django_cotton',
 
     # my created apps
-    'accounts',
-    'home',
+    'people.Users',
+    'people.Employees',
+    'people.Customers',
+
+    'project.Projects',
+    'project.Materials',
+    'project.Quotations',
+
+    'finance.Expenses',
+    'finance.LabourCostings',
+    'finance.Overheads',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -92,17 +100,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
             ],
         },
-        "loaders": [(
-            "django.template.loaders.cached.Loader",
-            [
-                "django_cotton.cotton_loader.Loader",
-                "django.template.loaders.filesystem.Loader",
-                "django.template.loaders.app_directories.Loader",
-            ],
-        )],
-        "builtins": [
-            "django_cotton.templatetags.cotton"
-        ],
     },
 ]
 
@@ -221,43 +218,35 @@ TO_EMAILS = env.list('TO_EMAILS')
 CORS_ALLOW_ALL_ORIGINS = True
 
 # auth config
-# LOGIN_REDIRECT_URL = 'dashboard:home'
-# LOGOUT_REDIRECT_URL = 'accounts:login'
-AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'Users.User'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_COOKIE_AGE = 24 * 60 * 60
 
 # azure blob setup
-if not DEBUG:
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.azure_storage.AzureStorage",
-            "OPTIONS": {
-                "connection_string": env("AZURE_CONNECTION_STRING"),
-                "account_name": env("AZURE_ACCOUNT_NAME"),
-                "account_key": env("AZURE_ACCOUNT_KEY"),
-                "azure_container": env("AZURE_MEDIA_CONTAINER"),
-                "expiration_secs": int(env("AZURE_URL_EXPIRATION_SECS")),
-            },
-        },
-        "staticfiles": {
-            "BACKEND": "storages.backends.azure_storage.AzureStorage",
-            "OPTIONS": {
-                "connection_string": env("AZURE_CONNECTION_STRING"),
-                "account_name": env("AZURE_ACCOUNT_NAME"),
-                "account_key": env("AZURE_ACCOUNT_KEY"),
-                "azure_container": env("AZURE_STATIC_CONTAINER"),
-            },
-        }
-    }
-    # AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
-    # AZURE_CONNECTION_STRING = env("AZURE_CONNECTION_STRING")
-    # AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY")
-    # AZURE_URL_EXPIRATION_SECS = int(env("AZURE_URL_EXPIRATION_SECS"))
-    # custom
-    # AZURE_MEDIA_CONTAINER = env("AZURE_MEDIA_CONTAINER")
-    # AZURE_STATIC_CONTAINER = env("AZURE_STATIC_CONTAINER")
-    # STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+# if not DEBUG:
+#     STORAGES = {
+#         "default": {
+#             "BACKEND": "storages.backends.azure_storage.AzureStorage",
+#             "OPTIONS": {
+#                 "connection_string": env("AZURE_CONNECTION_STRING"),
+#                 "account_name": env("AZURE_ACCOUNT_NAME"),
+#                 "account_key": env("AZURE_ACCOUNT_KEY"),
+#                 "azure_container": env("AZURE_MEDIA_CONTAINER"),
+#                 "expiration_secs": int(env("AZURE_URL_EXPIRATION_SECS")),
+#             },
+#         },
+#         "staticfiles": {
+#             "BACKEND": "storages.backends.azure_storage.AzureStorage",
+#             "OPTIONS": {
+#                 "connection_string": env("AZURE_CONNECTION_STRING"),
+#                 "account_name": env("AZURE_ACCOUNT_NAME"),
+#                 "account_key": env("AZURE_ACCOUNT_KEY"),
+#                 "azure_container": env("AZURE_STATIC_CONTAINER"),
+#             },
+#         }
+#     }
 

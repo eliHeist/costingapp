@@ -1,35 +1,5 @@
 {% extends '_base.html' %}{% load static %}
 
 {% block slot %}
-<!-- Sidebar -->
-<div :class="{'w-64': sidebarOpen, 'w-16': !sidebarOpen}" class="bg-gray-800 text-white transition-all duration-300 relative">
-    <!-- Hamburger Icon -->
-    <button @click="toggleSidebar" class="absolute top-4 left-4 text-2xl focus:outline-none">
-        <i :class="sidebarOpen ? 'fas fa-arrow-left' : 'fas fa-bars'"></i>
-    </button>
-
-    <div class="mt-12">
-        <ul>
-            <li class="py-4 pl-6 hover:bg-gray-700 cursor-pointer">Dashboard</li>
-            <li class="py-4 pl-6 hover:bg-gray-700 cursor-pointer">Projects</li>
-            <li class="py-4 pl-6 hover:bg-gray-700 cursor-pointer">Settings</li>
-        </ul>
-    </div>
-</div>
-
-<!-- Main Content -->
-<div class="flex-1 flex flex-col">
-    <!-- Header -->
-    <header class="bg-white shadow-md p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold">Dashboard</h1>
-        <div class="text-gray-800 font-medium">Hello, {{ request.user.username }}</div>
-    </header>
-
-    <!-- Content -->
-    <main class="flex-1 p-6 overflow-y-auto">
-        <h2 class="text-2xl font-semibold mb-4">Welcome to your dashboard!</h2>
-        <!-- Dashboard content goes here -->
-    </main>
-</div>
 
 {% endblock slot %}

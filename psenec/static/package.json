@@ -16,6 +16,7 @@
     "autoprefixer": "^10.4.14",
     "braces": "^3.0.2",
     "css-loader": "^6.8.1",
+    "daisyui": "^4.12.14",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss-loader": "^7.3.3",
     "sass": "^1.63.6",
@@ -34,12 +35,7 @@
     "@alpinejs/morph": "^3.13.1",
     "@alpinejs/persist": "^3.13.1",
     "alpinejs": "^3.13.1",
-    "flatpickr": "^4.6.13",
     "gsap": "^3.12.2",
-    "html2pdf.js": "^0.10.1",
-    "htmx.org": "^2.0.1",
-    "plotly.js": "^2.34.0",
-    "table2excel": "^1.0.0",
-    "three": "^0.157.0"
+    "htmx.org": "^2.0.1"
   }
 }

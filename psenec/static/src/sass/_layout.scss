@@ -1,0 +1,97 @@
+
+$link_padding: .75rem;
+
+aside.side-bar {
+    @apply bg-transparent text-light fixed inset-0;
+    transform: translateX(-100%);
+    transition: transform 300ms ease-out, background-color 100ms ease-out;
+    
+    &.reveal{
+        @apply bg-dark/70;
+        transform: translateX(0);
+
+        button.close {
+            transform: rotate(0deg) scale(1);
+            opacity: 1;
+        }
+
+        main.content {
+            @apply text-light;
+            transform: translateX(0);
+        }
+
+        .link {
+            opacity: 1;
+        }
+    }
+
+    button.close {
+        @apply h-20 aspect-square grid place-content-center absolute top-0 right-0 text-xl text-white;
+        transform: rotate(360deg) scale(0.5);
+        opacity: 0;
+        transition: all 1.5s ease-in-out;
+        transition-delay: 300ms;
+    }
+
+    main.content {
+        @apply bg-primary text-primary px-6 grid;
+        height: 100dvh;
+        grid-template-rows: auto 1fr;
+        transform: translateX(-20%);
+        transition: all 300ms ease-out;
+        transition-delay: 100ms;
+        max-width: 16rem;
+        
+        .logo {
+            @apply h-20 grid content-center;
+        }
+        
+        nav {
+            @apply grid;
+            grid-template-rows: 1fr auto;
+
+            .links {
+                ul.main-links{
+                    @apply grid gap-y-2 py-6;
+                    margin: 0 -$link_padding;
+                }
+
+                .sub-menu {
+                    @apply border-t border-light/20 py-6;
+
+                    .title {
+                        @apply text-sm text-white uppercase tracking-wide font-semibold mb-2;
+                    }
+
+                    ul.links{
+                        @apply grid gap-y-2 pt-3;
+                        margin: 0 -$link_padding;
+                    }
+                }
+            }
+            .link {
+                padding: $link_padding;
+                border-radius: .5rem;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                gap: 0.75rem;
+                text-decoration: none;
+                font-size: .95rem;
+
+                .icon{
+                    @apply w-7 h-7 text-lg text-center grid content-center;
+                }
+
+                &:hover, &.focus, &:focus {
+                    @apply text-white bg-dark/20;
+                }
+
+                &.focus {
+                    @apply font-semibold bg-dark/40;
+                }
+            }
+        }
+    }
+    
+}

@@ -1,36 +1,33 @@
 /* MIXINS */
-@mixin xl {
+@mixin xl-min {
     @media (max-width: 1280px) {
         @content;
     }
 }
-
-@mixin rxl {
+@mixin xl-max {
     @media (min-width: 1280px) {
         @content;
     }
 }
 
-@mixin sm {
+@mixin sm-min {
+    @media (min-width: 640px) {
+        @content;
+    }
+}
+@mixin sm-max {
     @media (min-width: 640px) {
         @content;
     }
 }
 
-@mixin md {
+@mixin md-min {
     @media (min-width: 768px) {
         @content;
     }
 }
-
-@mixin mdmax {
+@mixin md-max {
     @media (max-width: 768px) {
-        @content;
-    }
-}
-
-@mixin rsm {
-    @media (max-width: 639px) {
         @content;
     }
 }

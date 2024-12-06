@@ -27,3 +27,9 @@ vite.config.ts.timestamp-*
 
 # django
 __pycache__/
+
+
+# databases
+*.db
+*.sqlite
+*.sqlite3

@@ -1,5 +1,143 @@
-{% extends '_base.html' %}{% load static %}
+{% load static %}
 
-{% block slot %}
+<c-layouts._base title="{{ page_title }}">
+    <div class="flex h-screen" x-data="{
+        nav_open: false,
+        init() {
+            this.$watch('nav_open', value => {
+                if (value) {
+                    this.handleClick = this.handleClick.bind(this); // Bind the method to Alpine context
+                    document.addEventListener('click', this.handleClick);
+                } else {
+                    document.removeEventListener('click', this.handleClick);
+                }
+            });
+        },
+        handleClick(event){
+            if (event.target.classList.contains('backdrop')){
+                this.nav_open = false
+            }
+        }
+    }">
+        <!-- Sidebar -->
+        <aside class="side-bar" :class="nav_open ? 'reveal' : ''">
+            <div class="relative inset-0 backdrop" data-backdrop="true" x-ref="backdrop">
+                <button class="close" @click="nav_open=false">
+                    <i class="fas fa-xmark"></i>
+                </button>
+                <main class="content">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <h1 class="text-2xl font-black text-white">PSENEC</h1>
+                    </div>
+                    <!-- nav -->
+                    <nav>
+                        <div class="links">
+                            <!-- Navigation -->
+                            <ul class="main-links">
+                                <li>
+                                    <a href="#">
+                                        <button class="link" :class="'{{ request.path }}' == '/' ? 'focus' : ''">
+                                            <div class="icon">
+                                                <i class="fas fa-home"></i>
+                                            </div>
+                                            <span>Dashboard</span>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="link" :class="'{{ request.path }}'.contains('/projects') ? 'focus' : ''">
+                                            <div class="icon">
+                                                <i class="fas fa-folder"></i>
+                                            </div>
+                                            <span>Projects</span>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="link">
+                                            <div class="icon">
+                                                <i class="fas fa-folder"></i>
+                                            </div>
+                                            <span>Employees</span>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="link">
+                                            <div class="icon">
+                                                <i class="fas fa-folder"></i>
+                                            </div>
+                                            <span>Quotations</span>
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+    
+                            <!-- Teams -->
+                            <div class="sub-menu">
+                                <h2 class="title">Your teams</h2>
+                                <ul class="links">
+                                    <li>
+                                        <a href="#">
+                                            <button class="link">
+                                                <div class="icon outline outline-1 outline-light rounded-sm">
+                                                    <i class="fas fa-h"></i>
+                                                </div>
+                                                <span>Heroicons</span>
+                                            </button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+    
+                        <!-- Settings -->
+                        <div class="-mx-2 py-6">
+                            <a href="#">
+                                <button class="link">
+                                    <div class="icon">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <span>Settings</span>
+                                </button>
+                            </a>
+                        </div>
+                    </nav>
+                </main>
+            </div>
+        </aside>
 
-{% endblock slot %}
+        <!-- Main Content -->
+        <div class="flex-grow bg-gray-50">
+            <!-- Header -->
+            <header class="flex items-center justify-between bg-white border-b border-gray-200 px-6 py-2">
+                <div class="flex gap-x-2 []">
+                    <button class="border-r border-light pr-4" @click="nav_open=true">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <input type="text" placeholder="Search" class="w-1/3 p-2 focus:outline-none">
+                </div>
+                <div class="flex items-center gap-x-6">
+                    <i class="fas fa-bell text-grey-600"></i>
+                    <div class="flex items-center gap-x-2">
+                        <span class="text-grey-600 hidden sm:inline-flex">{{ request.user }}</span>
+                        <button type="button" class="w-8 h-8 grid place-content-center rounded-full bg-purple-300">
+                            <span class="font-bold" x-text="'{{ request.user }}'[0]"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="p-6">
+                <!-- Add content here -->
+                <div class="h-96 border-dashed border-2 border-gray-300 flex items-center justify-center text-gray-400 hidden"></div>
+                {{ slot }}
+            </div>
+        </div>
+    </div>
+</c-layout._base>

@@ -228,6 +228,3 @@ const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 function removeQuotes(text){
     return text.replace(/['"]/g, '')
 }
-
-// 
-setNavLink(active_link)

@@ -9,6 +9,5 @@
     "noImplicitAny": false,
     "alwaysStrict": false,
     "skipLibCheck": true,
-    "types": ["flatpickr"]
   }
 }

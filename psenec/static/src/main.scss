@@ -2,21 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './sass/colors';
 @import './sass/mixins';
+@import './sass/colors';
 @import './sass/fonts';
 
-@import './sass/buttons';
-@import './sass/datepicker';
-@import './sass/print';
-@import './sass/switch';
-@import './sass/forms';
-@import './sass/tables';
-@import './sass/themeToggler';
-@import './sass/cards';
-@import './sass/navmenu';
-@import './sass/utilities';
-@import './sass/popover';
+@import './sass/layout';
+// @import './sass/buttons';
+// @import './sass/datepicker';
+// @import './sass/print';
+// @import './sass/switch';
+// @import './sass/forms';
+// @import './sass/tables';
+// @import './sass/themeToggler';
+// @import './sass/cards';
+// @import './sass/navmenu';
+// @import './sass/utilities';
+// @import './sass/popover';
 
 
 body {

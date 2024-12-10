@@ -1,0 +1,81 @@
+
+<c-layouts.base page_title="Employees">
+    <div x-data="{
+        employee_count: {{ employees.count }},
+        async handleAdd(event){
+            const name = event.target.name.value
+            const contact = event.target.contact.value
+            const contact_2 = event.target.contact_2.value
+            console.log(name, contact, contact_2)
+            const response = await POST('/employees/api/', {name, contact, contact_2}, true)
+            if(response.ok){
+                const data = await response.json()
+
+                // get the status of the employee
+                const active_status = data.is_active 
+                    ? `<i class='fas fa-circle-check text-green-500'></i>` 
+                    : `<i class='fas fa-circle-x text-green-500'></i>`
+
+                // create the table row inner html
+                const template = `<td>${data.name}</td><td>${data.contact}</td><td>${data.contact_2}</td><td>${active_status}</td>`
+
+                const tr = document.createElement('tr')
+                tr.innerHTML = template
+
+                $refs.data_table_data.appendChild(tr)
+
+                // update employee counter
+                this.employee_count ++
+
+                // close the dialog
+                document.getElementById('employee_create_dlg').close()
+            }
+        }
+    }">
+        <section class="flex justify-between items-center flex-wrap">
+            <div>
+                <p x-text="employee_count"></p>
+            </div>
+            <div class="actions flex gap-x-4">
+                <c-ui.dialog label="Add an Employee" icon="fas fa-plus" id="employee_create_dlg">
+                    <form action="" method="post" @submit.prevent="handleAdd(event)">
+                        <div id="token">{% csrf_token %}</div>
+                        <div class="grid gap-y-3 mb-6">
+                            <c-ui.input label="Name" name="name" required="True" />
+                            <c-ui.input label="Contact" name="contact" required="True" />
+                            <c-ui.input label="Contact 2" name="contact_2" />
+                        </div>
+                        <c-ui.button text="Save" type="submit" icon="fas fa-save" vars="formmethod='dialog'" />
+                    </form>
+                </c-ui.dialog>
+            </div>
+        </section>
+
+        <main>
+            <table class="table w-full">
+                <thead x-ref="data_table">
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Contact 2</th>
+                    <th>Status</th>
+                </thead>
+                <tbody x-ref="data_table_data">
+                    {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.contact }}</td>
+                        <td>{{ employee.contact_2 }}</td>
+                        <td>
+                            {% if employee.is_active %}
+                            <i class="fas fa-circle-check text-green-500"></i>
+                            {% else %}
+                            <i class="fas fa-circle-x text-green-500"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</c-layouts.base>

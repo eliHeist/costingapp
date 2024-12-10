@@ -110,3 +110,36 @@ body:has(.htmx-indicator.htmx-request){
         }
     }
 }
+dialog{
+    border-radius: 1rem;
+    padding: 1rem;
+    position: relative;
+    min-height: 10rem;
+    min-width: 15rem;
+
+    @include sm-min{
+        min-width: 20rem;
+    }
+
+    @include md-min{
+        min-width: 30rem;
+    }
+
+    @include xl-min {
+        min-width: 50rem;
+    }
+
+    .dlg_close_button{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2.5rem;
+        width: 2.5rem;
+        display: grid;
+        place-content: center;
+    }
+
+    &::backdrop {
+        @apply bg-dark/60;
+    }
+}

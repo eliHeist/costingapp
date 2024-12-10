@@ -3,6 +3,7 @@ $link_padding: .75rem;
 
 aside.side-bar {
     @apply bg-transparent text-light fixed inset-0;
+    z-index: 100;
     transform: translateX(-100%);
     transition: transform 300ms ease-out, background-color 100ms ease-out;
     

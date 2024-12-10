@@ -47,7 +47,7 @@
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <button class="link" :class="'{{ request.path }}'.contains('/projects') ? 'focus' : ''">
+                                        <button class="link">
                                             <div class="icon">
                                                 <i class="fas fa-folder"></i>
                                             </div>
@@ -56,8 +56,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <button class="link">
+                                    <a href="{% url 'Employees:employee-list' %}">
+                                        <button class="link" :class="'{{ request.path }}'.includes('{% url 'Employees:employee-list' %}') ? 'focus' : ''">
                                             <div class="icon">
                                                 <i class="fas fa-folder"></i>
                                             </div>
@@ -112,9 +112,9 @@
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-grow bg-gray-50">
+        <div class="flex-grow bg-gray-50 overflow-y-auto">
             <!-- Header -->
-            <header class="flex items-center justify-between bg-white border-b border-gray-200 px-6 py-2">
+            <header class="flex items-center justify-between bg-white border-b border-gray-200 px-6 py-2 sticky top-0 z-50">
                 <div class="flex gap-x-2 []">
                     <button class="border-r border-light pr-4" @click="nav_open=true">
                         <i class="fas fa-bars text-lg"></i>

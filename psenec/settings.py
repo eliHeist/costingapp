@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django_cotton',
 
     # my created apps
+    'api',
+    
     'people.Users',
     'people.Employees',
     'people.Customers',

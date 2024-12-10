@@ -1,0 +1,10 @@
+<div x-data="{}">
+    <c-ui.button text="{% if label %}{{ label }}{% else %}Open Dialog{% endif %}" icon="{{ icon }}" type="button" vars="@click='$refs.dlg.showModal()'" />
+    <dialog id="{{ id }}" x-ref="dlg" class="xl:min-w-[40rem]">
+        <button class="dlg_close_button" @click='$refs.dlg.close()'>
+            <i class="fas fa-xmark text-lg text-muted hover:text-dark"></i>
+        </button>
+        <!-- <c-ui.button icon="fas fa-xmark" variant="ghost" size="icon"  vars="" /> -->
+        {{ slot }}
+    </dialog>
+</div>

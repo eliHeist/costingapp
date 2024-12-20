@@ -1,12 +1,12 @@
 from .schemas import Employee, EmployeeSchema
-from ninja import NinjaAPI
+from ninja import Router
 
-api = NinjaAPI()
+employee_router = Router()
 
-@api.get("", response=list[EmployeeSchema])
+@employee_router.get("", response=list[EmployeeSchema], url_name='get_all_employees')
 def get_employees(request):
     return Employee.objects.all()
 
-@api.post("", response=EmployeeSchema)
-def add_employee(request, employee: EmployeeSchema):
+@employee_router.post("", response=EmployeeSchema, url_name='create_employee')
+def create_employee(request, employee: EmployeeSchema):
     return Employee.objects.create(**employee.dict())

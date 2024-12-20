@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     # my created apps
     'api',
     
+    'main.Frontend',
+    
     'people.Users',
     'people.Employees',
     'people.Customers',

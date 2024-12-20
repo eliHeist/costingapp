@@ -11,10 +11,12 @@
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'dist/bundle.css' %}">
     <link rel="icon" href="{% static 'images/favicon.webp' %}">
+    {{ links }}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {{ slot }}
 </body>
+{{ scripts }}
 <script src="{% static 'js/global.js' %}" defer></script>
 <script src="{% static 'dist/bundle.js' %}" defer></script>
 </html>

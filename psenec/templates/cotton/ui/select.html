@@ -8,6 +8,11 @@
         {% else %}
         <div class="p-1"></div>
         {% endif %}
-        <input type="{{ type }}" name="{{ name }}" id="{{ id }}" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" placeholder="{{ placeholder }}" value="{{ value }}" {{ vars|safe }} {% if required %}required{% endif %}>
+        <select name="{{ name }}" id="{{ id }}" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent" placeholder="{{ placeholder }}" {{ vars|safe }} {% if required %}required{% endif %}>
+            {{ slot }}
+        </select>
+        {% if action %}
+        <button type="button" class="h-10 w-10 grid place-content-center" {{ action_vars|safe }}><i class="{{ action_icon }} text-primary"></i></button>
+        {% endif %}
     </div>
 </div>

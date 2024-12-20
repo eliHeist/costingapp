@@ -66,12 +66,12 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <button class="link">
+                                    <a href="{% url 'LabourCostings:labor-table' %}">
+                                        <button class="link" :class="'{{ request.path }}'.includes('{% url 'LabourCostings:labor-table' %}') ? 'focus' : ''">
                                             <div class="icon">
                                                 <i class="fas fa-folder"></i>
                                             </div>
-                                            <span>Quotations</span>
+                                            <span>Labor Table</span>
                                         </button>
                                     </a>
                                 </li>
@@ -133,11 +133,13 @@
             </header>
 
             <!-- Content Area -->
-            <div class="p-6">
+            <div class="p-3 pb-0 sm:p-6 sm:pb-0 h-full">
                 <!-- Add content here -->
                 <div class="h-96 border-dashed border-2 border-gray-300 flex items-center justify-center text-gray-400 hidden"></div>
                 {{ slot }}
             </div>
         </div>
     </div>
+    <c-slot name="links">{{ links }}</c-slot>
+    <c-slot name="scripts">{{ scripts }}</c-slot>
 </c-layout._base>

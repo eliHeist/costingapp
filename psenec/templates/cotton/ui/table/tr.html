@@ -1,0 +1,8 @@
+<tr id="{{ id }}" class="border-gray-100 last-of-type:border-0 border-b {{ class }}" {{ vars }}>
+    <template x-show="show_checks" x-cloak>
+        <c-ui.table.td>
+            <c-ui.input type="checkbox" class="table-check"/>
+        </c-ui.table.td>
+    </template>
+    {{ slot }}
+</tr>

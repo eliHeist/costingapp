@@ -2,6 +2,7 @@
 $link_padding: .75rem;
 
 aside.side-bar {
+    --link_padding: .75rem;
     @apply bg-transparent text-light fixed inset-0;
     z-index: 100;
     transform: translateX(-100%);
@@ -54,7 +55,7 @@ aside.side-bar {
             .links {
                 ul.main-links{
                     @apply grid gap-y-2 py-6;
-                    margin: 0 -$link_padding;
+                    margin: 0 -var(--link_padding);
                 }
 
                 .sub-menu {
@@ -66,12 +67,12 @@ aside.side-bar {
 
                     ul.links{
                         @apply grid gap-y-2 pt-3;
-                        margin: 0 -$link_padding;
+                        margin: 0 -var(--link_padding);
                     }
                 }
             }
             .link {
-                padding: $link_padding;
+                padding: var(--link_padding);
                 border-radius: .5rem;
                 display: flex;
                 align-items: center;

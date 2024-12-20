@@ -6,6 +6,9 @@ import collapse from "@alpinejs/collapse"
 import './main.scss';
 import 'htmx.org';
 
+// declare let htmx;
+// htmx.config.globalViewTransitions = true
+
 
 Alpine.plugin(mask)
 Alpine.plugin(collapse)

@@ -1,0 +1,65 @@
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-from-right {
+    from {
+        transform: translateX(90px);
+    }
+}
+
+@keyframes slide-to-left {
+    to {
+        transform: translateX(-90px);
+    }
+}
+
+// horizontal slide
+.slide-side {
+    view-transition-name: slide-side;
+}
+
+::view-transition-old(slide-side) {
+    animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+::view-transition-new(slide-side) {
+    animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
+// vertical slide
+@keyframes slide-from-top {
+    from {
+        transform: translateX(90px);
+    }
+}
+
+@keyframes slide-to-bottom {
+    to {
+        transform: translateX(-90px);
+    }
+}
+
+.slide-up {
+    view-transition-name: slide-up;
+}
+
+::view-transition-old(slide-up) {
+    animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-bottom;
+}
+
+::view-transition-new(slide-up) {
+    animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-top;
+}

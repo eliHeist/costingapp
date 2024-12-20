@@ -7,6 +7,7 @@
 @import './sass/fonts';
 
 @import './sass/layout';
+@import './sass/litepicker';
 // @import './sass/buttons';
 // @import './sass/datepicker';
 // @import './sass/print';
@@ -113,20 +114,16 @@ body:has(.htmx-indicator.htmx-request){
 dialog{
     border-radius: 1rem;
     padding: 1rem;
+    padding-top: 1.5rem;
     position: relative;
     min-height: 10rem;
-    min-width: 15rem;
-
-    @include sm-min{
-        min-width: 20rem;
-    }
+    width: 25rem;
+    max-width: 90vw;
 
     @include md-min{
-        min-width: 30rem;
-    }
-
-    @include xl-min {
-        min-width: 50rem;
+        min-width: 35rem;
+        padding: 1.5rem;
+        padding-top: 1.75rem;
     }
 
     .dlg_close_button{
@@ -143,3 +140,4 @@ dialog{
         @apply bg-dark/60;
     }
 }
+

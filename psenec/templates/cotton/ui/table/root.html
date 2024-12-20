@@ -1,0 +1,32 @@
+<section role="table" class="rounded-xl overflow-hidden shadow-md" x-data="{
+    show_checks: {% if show_checks %}true{% else %}false{% endif %},
+}">
+    <div class="@container bg-white">
+        <header class="table-header sticky top-0 py-6 px-3">
+            <h3 class="text-2xl font-semibold">{{ title }}</h3>
+            {% if description %}
+            <p class="">{{ description }}</p>
+            {% endif %}
+            {% if vars %}
+            <div class="flex gap-x-3 mt-3">
+                {{ vars }}
+            </div>
+            {% endif %}
+        </header>
+        <main class="w-full text-left text-sm">
+            <table class="w-full">
+                <thead class="sticky top-0 border-gray-300 border-b">
+                    <template x-show="show_checks" x-cloak>
+                        <c-ui.table.th>
+                            <c-ui.input type="checkbox" class="table-check"/>
+                        </c-ui.table.th>
+                    </template>
+                    {{ headers }}
+                </thead>
+                <tbody class="bg-grey-50" id="{{ body_id }}" class="{{ body_class }}" {{ body_vars }}>
+                    {{ data }}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</section>

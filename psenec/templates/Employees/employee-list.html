@@ -7,7 +7,7 @@
             const contact = event.target.contact.value
             const contact_2 = event.target.contact_2.value
             console.log(name, contact, contact_2)
-            const response = await POST('/employees/api/', {name, contact, contact_2}, true)
+            const response = await POST('{% url 'api:create_employee' %}', {name, contact, contact_2}, true)
             if(response.ok){
                 const data = await response.json()
 

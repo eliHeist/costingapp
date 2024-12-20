@@ -23,6 +23,9 @@ module.exports = {
                     900: 'rgb(28, 28, 28)'
                 }
             },
+            screens: {
+                sm: '500px',
+            },
         },
     },
     daisyui: {
@@ -52,6 +55,7 @@ module.exports = {
     },
     plugins: [
         daisyui,
+        require('@tailwindcss/container-queries'),
     ],
     darkMode: 'media',
 };

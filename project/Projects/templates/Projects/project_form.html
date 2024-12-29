@@ -1,0 +1,11 @@
+{% load tailwind_filters static %}
+
+<c-layouts.base title="{% if update %}{{ project.title }} Edit {% else %}New Project Form{% endif %}">
+    <section>
+        <div class="grid">
+            <c-ui.form.root title="Add New Project details" class="mx-auto">
+                {{ form|crispy }}
+            </c-ui.form.root>
+        </div>
+    </section>
+</c-layouts.base>

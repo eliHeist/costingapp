@@ -1,4 +1,4 @@
-import daisyui from "daisyui"
+// import daisyui from "daisyui"
 
 module.exports = {
     content: ['../templates/*.html', '../../**/templates/**/*.html'],
@@ -28,33 +28,33 @@ module.exports = {
             },
         },
     },
-    daisyui: {
-        themes: [
-            {
-                light: {
-                    ...require("daisyui/src/theming/themes")["light"],
-                    "primary": "hsl(var(--clr-primary) / <alpha-value>)",
-                    "light": "hsl(var(--clr-light) / <alpha-value>)",
-                    "dark": "hsl(var(--clr-dark) / <alpha-value>)",
-                    "neutral": "hsl(var(--clr-muted) / <alpha-value>)",
-                },
-            },
-            {
-                dark: {
-                    ...require("daisyui/src/theming/themes")["dark"],
-                    "primary": "hsl(var(--clr-primary) / <alpha-value>)",
-                    "light": "hsl(var(--clr-light) / <alpha-value>)",
-                    "dark": "hsl(var(--clr-dark) / <alpha-value>)",
-                    "neutral": "hsl(var(--clr-muted) / <alpha-value>)",
-                },
-            },
-        ],
-    },
+    // daisyui: {
+    //     themes: [
+    //         {
+    //             light: {
+    //                 ...require("daisyui/src/theming/themes")["light"],
+    //                 "primary": "hsl(var(--clr-primary) / <alpha-value>)",
+    //                 "light": "hsl(var(--clr-light) / <alpha-value>)",
+    //                 "dark": "hsl(var(--clr-dark) / <alpha-value>)",
+    //                 "neutral": "hsl(var(--clr-muted) / <alpha-value>)",
+    //             },
+    //         },
+    //         {
+    //             dark: {
+    //                 ...require("daisyui/src/theming/themes")["dark"],
+    //                 "primary": "hsl(var(--clr-primary) / <alpha-value>)",
+    //                 "light": "hsl(var(--clr-light) / <alpha-value>)",
+    //                 "dark": "hsl(var(--clr-dark) / <alpha-value>)",
+    //                 "neutral": "hsl(var(--clr-muted) / <alpha-value>)",
+    //             },
+    //         },
+    //     ],
+    // },
     variants: {
         extend: {},
     },
     plugins: [
-        daisyui,
+        // daisyui,
         require('@tailwindcss/container-queries'),
     ],
     darkMode: 'media',

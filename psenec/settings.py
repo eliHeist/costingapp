@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django_htmx',
     "template_partials",
     'django_cotton',
+]
 
+MY_APPS = [
     # my created apps
     'api',
     
@@ -57,6 +59,11 @@ INSTALLED_APPS = [
     'finance.LabourCostings',
     'finance.Overheads',
 ]
+
+APP_TEMPLATE_DIRS = []
+for app in MY_APPS:
+    INSTALLED_APPS.append(app)
+    APP_TEMPLATE_DIRS.append(BASE_DIR/app.replace('.', '/')/'templates')
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -92,7 +99,7 @@ ROOT_URLCONF = 'psenec.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'psenec/templates'],
+        'DIRS': [BASE_DIR/'psenec/templates', *APP_TEMPLATE_DIRS],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

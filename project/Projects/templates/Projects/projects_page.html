@@ -1,0 +1,20 @@
+
+<c-layouts.base page_title="Projects">
+    <h2 class="text-center text-4xl">Projects page</h2>
+    <div class="flex flex-wrap">
+        <a href="{% url 'Projects:add' %}">
+            <c-ui.button text="Add project" icon="fas fa-plus" variant="outline-primary" />
+        </a>
+    </div>
+    <div class="">
+        {% for project in projects %}
+        <div class="rounded-2xl">
+            <h3 class="">{{ project.title }}</h3>
+            <div class="flex gap-x-1">
+                <p>For:</p>
+                <p>{{ project.client }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</c-layouts.base>

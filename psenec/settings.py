@@ -233,9 +233,15 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'Users.User'
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_SAVE_EVERY_REQUEST = False
-SESSION_COOKIE_AGE = 24 * 60 * 60
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# SESSION_SAVE_EVERY_REQUEST = False
+# SESSION_COOKIE_AGE = 24 * 60 * 60
+
+# ===== DEBUG ISSUES ===========>
+if DEBUG:
+    # browser reload
+    INSTALLED_APPS.append("django_browser_reload") 
+    MIDDLEWARE.append("django_browser_reload.middleware.BrowserReloadMiddleware")
 
 # azure blob setup
 # if not DEBUG:

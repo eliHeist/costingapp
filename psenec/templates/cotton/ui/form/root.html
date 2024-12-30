@@ -5,10 +5,10 @@
     </header>
     {% csrf_token %}
     <div class="grid gap-y-2">{{ slot }}</div>
-    <footer class="flex gap-x-3 mt-6 justify-start {{ footer_class }}">
+    <footer class="flex gap-x-3 mt-6 justify-end {{ footer_class }}">
+        {{ footer }}
         {% if not no_action %}
         <c-ui.button text="{% if action_text %}{{ action_text }}{% else %}Submit{% endif %}" icon="fas fa-save" type="submit" class="" />
         {% endif %}
-        {{ footer }}
     </footer>
 </form>

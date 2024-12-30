@@ -17,4 +17,5 @@ dependencies = [
     "crispy-tailwind>=1.0.3",
     "django-htmx>=1.21.0",
     "django-template-partials>=24.4",
+    "django-browser-reload>=1.17.0",
 ]

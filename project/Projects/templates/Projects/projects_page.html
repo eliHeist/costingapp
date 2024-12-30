@@ -1,20 +1,78 @@
+{% load partials %}
 
-<c-layouts.base page_title="Projects">
-    <h2 class="text-center text-4xl">Projects page</h2>
-    <div class="flex flex-wrap">
-        <a href="{% url 'Projects:add' %}">
-            <c-ui.button text="Add project" icon="fas fa-plus" variant="outline-primary" />
-        </a>
-    </div>
-    <div class="">
-        {% for project in projects %}
-        <div class="rounded-2xl">
-            <h3 class="">{{ project.title }}</h3>
-            <div class="flex gap-x-1">
-                <p>For:</p>
-                <p>{{ project.client }}</p>
+{% partialdef project %}
+<div class="bg-white shadow-md rounded-lg p-4" id="project-{{ project.pk }}">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+            <div class="bg-orange-200 p-2 rounded-full">
+                <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h2 class="text-lg font-semibold">{{ project.title }}</h2>
+                <p class="text-gray-500">{{ project.description }}</p>
             </div>
         </div>
-        {% endfor %}
+        <div class="flex items-center">
+            <span class="bg-green-100 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">Active</span>
+        </div>
+    </div>
+    <div class="grid grid-cols-4 gap-4 text-center">
+        <div>
+            <p class="text-2xl font-bold">687</p>
+            <p class="text-gray-500">Items</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold">563</p>
+            <p class="text-gray-500">Items Done</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold">50%</p>
+            <p class="text-gray-500">Cleared</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold">{{ project.client }}</p>
+            <p class="text-gray-500">Client</p>
+        </div>
+    </div>
+    <div class="flex items-center justify-end mt-4 text-gray-500">
+        <div class="flex items-center mr-4">
+            <i class="fas fa-person"></i>
+            <span>32</span>
+        </div>
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-4-1H6v2h8v-2z" />
+            </svg>
+            <span>43</span>
+        </div>
+    </div>
+</div>
+
+{% endpartialdef project %}
+
+<c-layouts.base page_title="Projects">
+    <h2 class="text-center text-4xl mb-8">Projects page</h2>
+    <div class="flex flex-wrap justify-end">
+        <form action="" method="post" hx-swap="innerHtml beforeStart" hx-target="#project_list">
+            {% csrf_token %}
+            <c-ui.drawer title="New Project Form">
+                <div class="grid gap-6">
+                    <c-ui.form_elements.input required="True" label="Name" name="name" type="text" placeholder="Give the project a name" />
+                    <c-ui.form_elements.textarea label="Description" name="description" icon="fas fa-at" placeholder="Describe the project." />
+                </div> 
+                <div class="grid gap-6 mt-12">
+                    <div x-data="">
+                        <c-ui.form_elements.select required="True" label="Customer" name="customer" id="customer_select" action="True" action_icon="fas fa-plus text-green-600" />
+                        
+                    </div>
+                    <c-ui.form_elements.textarea label="Description" name="description" icon="fas fa-at" placeholder="Describe the project." />
+                </div>
+            </c-ui.drawer>
+        </form>
+    </div>
+    <div class="grid" id="project_list">
+        {% for project in projects %}{% partial project %}{% endfor %}
     </div>
 </c-layouts.base>

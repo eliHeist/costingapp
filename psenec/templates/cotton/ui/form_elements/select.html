@@ -1,0 +1,19 @@
+<div class="grid {{ class }}">
+    {% if label %}
+    <label for="name" class="block text-sm font-medium text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
+    {% endif %}
+    <div class="flex items-center border border-gray-300 rounded-md">
+        {% if icon %}
+        <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
+        {% else %}
+        <div class="p-1"></div>
+        {% endif %}
+        <select name="{{ name }}" id="{{ id }}" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent" placeholder="{{ placeholder }}" {{ vars|safe }} {% if required %}required{% endif %}>
+            <option value="">--------</option>
+            {{ slot }}
+        </select>
+        {% if action %}
+        <button type="button" class="h-10 w-10 grid place-content-center" {{ action_vars|safe }}><i class="text-primary {{ action_icon }}"></i></button>
+        {% endif %}
+    </div>
+</div>

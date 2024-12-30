@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from api.api import api
@@ -15,3 +16,6 @@ urlpatterns = [
     # project
     path('projects/', include('project.Projects.urls', namespace='Projects')),
 ]
+
+if settings.DEBUG:
+    urlpatterns.append(path("__reload__/", include("django_browser_reload.urls")))

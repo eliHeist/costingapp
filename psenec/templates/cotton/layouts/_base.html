@@ -13,7 +13,7 @@
     <link rel="icon" href="{% static 'images/favicon.webp' %}">
     {{ links }}
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="text-grey bg-lighter">
     {{ slot }}
 </body>
 {{ scripts }}

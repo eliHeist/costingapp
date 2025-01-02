@@ -3,27 +3,34 @@ $link_padding: .75rem;
 
 aside.side-bar {
     --link_padding: .75rem;
-    @apply bg-transparent text-light fixed inset-0;
+    $link_padding: .5rem;
+
     z-index: 100;
-    transform: translateX(-100%);
-    transition: transform 300ms ease-out, background-color 100ms ease-out;
+    @apply bg-lighter;
+    
+    @include xl-max {
+        @apply bg-transparent fixed inset-0;
+        transform: translateX(-100%);
+        transition: transform 300ms ease-out, background-color 100ms ease-out;
+    }
     
     &.reveal{
-        @apply bg-dark/70;
-        transform: translateX(0);
-
-        button.close {
-            transform: rotate(0deg) scale(1);
-            opacity: 1;
-        }
-
-        main.content {
-            @apply text-light;
+        @include xl-max {
+            @apply bg-black/70;
             transform: translateX(0);
-        }
-
-        .link {
-            opacity: 1;
+            
+            button.close {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+    
+            main.content {
+                transform: translateX(0);
+            }
+    
+            .link {
+                opacity: 1;
+            }
         }
     }
 
@@ -33,16 +40,24 @@ aside.side-bar {
         opacity: 0;
         transition: all 1.5s ease-in-out;
         transition-delay: 300ms;
+
+        @include xl-min {
+            @apply hidden;
+        }
     }
 
     main.content {
-        @apply bg-primary text-primary px-6 grid;
+        @apply px-6 grid border-r-2 border-light bg-lighter;
         height: 100dvh;
         grid-template-rows: auto 1fr;
-        transform: translateX(-20%);
-        transition: all 300ms ease-out;
-        transition-delay: 100ms;
-        max-width: 16rem;
+        width: 16rem;
+        
+        @include xl-max {
+            transform: translateX(-20%);
+            transition: all 300ms ease-out;
+            transition-delay: 100ms;
+            max-width: 16rem;
+        }
         
         .logo {
             @apply h-20 grid content-center;
@@ -55,24 +70,24 @@ aside.side-bar {
             .links {
                 ul.main-links{
                     @apply grid gap-y-2 py-6;
-                    margin: 0 -var(--link_padding);
+                    margin-left: -($link_padding+0.1);
                 }
 
                 .sub-menu {
-                    @apply border-t border-light/20 py-6;
+                    @apply border-t border-light py-6;
 
                     .title {
-                        @apply text-sm text-white uppercase tracking-wide font-semibold mb-2;
+                        @apply text-sm text-black uppercase tracking-wide font-semibold mb-2;
                     }
 
                     ul.links{
                         @apply grid gap-y-2 pt-3;
-                        margin: 0 -var(--link_padding);
+                        margin-left: -($link_padding+0.1rem);
                     }
                 }
             }
             .link {
-                padding: var(--link_padding);
+                padding: $link_padding;
                 border-radius: .5rem;
                 display: flex;
                 align-items: center;
@@ -86,11 +101,11 @@ aside.side-bar {
                 }
 
                 &:hover, &.focus, &:focus {
-                    @apply text-white bg-dark/20;
+                    @apply bg-black/10;
                 }
 
                 &.focus {
-                    @apply font-semibold bg-dark/40;
+                    @apply text-white font-semibold bg-accent;
                 }
             }
         }

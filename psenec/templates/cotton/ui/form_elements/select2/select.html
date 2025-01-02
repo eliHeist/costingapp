@@ -1,0 +1,89 @@
+<div class="grid {{ class }}" x-data="{
+    selected_element: null,
+    show_options: false,
+    search_string: '',
+    selectOption(option){
+        this.selected_option = option
+    },
+    clearSelection(){
+        this.selected_element.setAttribute('aria-selected', 'false')
+        this.selected_element = null
+        this.show_options = true
+        this.search_string = ''
+    },
+    handleSearch(event){
+        let options = this.$refs.options.querySelectorAll('.option')
+        options.forEach(element => {
+            let search_values = element.getAttribute('data-search').toLowerCase()
+            search_values += element.innerText.toLowerCase()
+            if (search_values.includes(this.search_string.toLowerCase())) {
+                element.classList.remove('hidden')
+            }
+            else{
+                element.classList.add('hidden')
+            }
+        })
+    },
+    async init(){
+        let options = this.$refs.options.querySelectorAll('.option')
+        options.forEach(element => {
+            if (element.getAttribute('aria-selected') == 'true') {
+                this.selected_element = element
+                this.search_string = element.innerText
+                console.log(this.selected_element.getAttribute('data-value'))
+                console.log(this.selected_element.innerText)
+            }
+            element.addEventListener('click', (event) => {
+                if (event.srcElement != this.selected_element) {
+                    event.srcElement.setAttribute('aria-selected', 'true')
+                    this.selected_element = event.srcElement
+                    this.search_string = element.innerText
+                    this.show_options = false
+                }
+            })
+        });
+    }
+}">{% comment %}{% endcomment %}
+    {% if label %}
+    <label for="name" class="block text-sm font-medium text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
+    {% endif %}
+    <div class="flex items-center border border-gray-300 focus-within:border-gray-500 rounded-md relative">
+        {% if icon %}
+        <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
+        {% else %}
+        <div class="p-1"></div>
+        {% endif %}
+        <!-- search field -->
+        <input type="text" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" placeholder="Search here" 
+            x-model="search_string"
+            :disabled="selected_element != null"
+            @keyup="handleSearch(event)"
+            {% if required %}required{% endif %} x-ref="search">
+        
+        <!-- value field -->
+        <input type="text" name="{{ name }}" id="{{ id }}" class="hidden" 
+            :value="selected_element == null ? '' : selected_element.getAttribute('data-value')" 
+            {{ vars|safe }} {% if required %}required{% endif %} x-ref="value">
+        
+        <!-- options -->
+        <div class="options absolute left-0 right-0 top-[120%] [box-shadow:_0_4px_8px_0_rgba(0,_0,_0,_0.2),_0_6px_8px_0_rgba(0,_0,_0,_0.1);] bg-white pb-4 rounded-lg" x-show="show_options" x-cloak x-collapse>
+            <div class="flex justify-end px-2">
+                <button type="button" @click="show_options = false" class="text-gray-500 hover:text-red-500 text-xl">
+                    &times;
+                </button>
+            </div>
+            <div class="grid gap-y-1 all_options" x-ref="options">{{ options }}</div>
+        </div>
+        <!-- clear selection -->
+        <button type="button" class="h-10 w-10 rounded-full grid place-content-center transition-all hover:bg-light/40" @click="clearSelection()" x-show="selected_element!=null"><i class="text-gray-500 fas fa-xmark"></i></button>
+        <!-- open options -->
+        <button type="button" @click="show_options = !show_options" x-show="selected_element==null" 
+            class="h-10 w-10 rounded-full grid place-content-center transition-all hover:bg-primary/20">
+            <i class="text-gray-500 fas fa-chevron-down transition-all" :class="show_options ? 'rotate-180' : 'rotate-0'"></i>
+        </button>
+        {% if action %}
+        <button type="button" class="h-10 w-10 grid place-content-center" x-show="selected_element==null" @click="show_options=false;{{ click_commands }}" {{ action_vars|safe }}>
+            <i class="text-primary {{ action_icon }}"></i></button>
+        {% endif %}
+    </div>
+</div>

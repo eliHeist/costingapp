@@ -1,0 +1,81 @@
+<aside class="side-bar" :class="nav_open ? 'reveal' : ''">
+    <div class="relative inset-0 backdrop" data-backdrop="true" x-ref="backdrop">
+        <button class="close" @click="nav_open=false">
+            <i class="fas fa-xmark"></i>
+        </button>
+        <main class="content">
+            <!-- Logo -->
+            <div class="logo">
+                <h1 class="text-2xl font-semibold text-primary">PSENEC</h1>
+            </div>
+            <!-- nav -->
+            <nav>
+                <div class="links">
+                    <!-- Navigation -->
+                    <ul class="main-links">
+                        <li>
+                            <a href="/">
+                                <button class="link" :class="'{{ request.path }}' == '/' ? 'focus' : ''">
+                                    <div class="icon">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <span>Dashboard</span>
+                                </button>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Projects:projects' %}">
+                                <button class="link" :class="'{{ request.path }}'.includes('{% url 'Projects:projects' %}') ? 'focus' : ''">
+                                    <div class="icon">
+                                        <i class="fa-solid fa-bars-progress"></i>
+                                    </div>
+                                    <span>Projects</span>
+                                </button>
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="{% url 'LabourCostings:labor-table' %}">
+                                <button class="link" :class="'{{ request.path }}'.includes('{% url 'LabourCostings:labor-table' %}') ? 'focus' : ''">
+                                    <div class="icon">
+                                        <i class="fas fa-folder"></i>
+                                    </div>
+                                    <span>Labor Table</span>
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Teams -->
+                    <div class="sub-menu">
+                        <h2 class="title">People</h2>
+                        <ul class="links">
+                            <li>
+                                <a href="{% url 'Employees:employee-list' %}">
+                                    <button class="link" :class="'{{ request.path }}'.includes('{% url 'Employees:employee-list' %}') ? 'focus' : ''">
+                                        <div class="icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <span>Employees</span>
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div class="-mx-2 py-6">
+                    <a href="#">
+                        <button class="link">
+                            <div class="icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span>Settings</span>
+                        </button>
+                    </a>
+                </div>
+            </nav>
+        </main>
+    </div>
+</aside>

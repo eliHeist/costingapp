@@ -1,0 +1,24 @@
+.ttl {
+    @apply text-black font-medium;
+}
+
+.title {
+    @apply text-xl;
+    @extend .ttl;
+}
+.title-2 {
+    @apply text-2xl;
+    @extend .ttl;
+}
+.title-3 {
+    @apply text-3xl;
+    @extend .ttl;
+}
+.title-4 {
+    @apply text-4xl;
+    @extend .ttl;
+}
+.title-5 {
+    @apply text-5xl;
+    @extend .ttl;
+}

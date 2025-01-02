@@ -1,0 +1,9 @@
+
+<div class="bg-white px-4 py-2 text-sm border-l-2 border-transparent transition-all cursor-pointer 
+        aria-selected:border-primary option
+        hover:bg-gray-100" 
+    aria-selected="{% if selected %}{{ selected }}{% else %}false{% endif %}"
+    data-value="{{ value }}"
+    data-search="{{ search_values }}">
+    {{ text }}
+</div>

@@ -1,7 +1,22 @@
 :root {
-    --clr-primary: 273 53% 37%;
-    --clr-light: 272 23% 89%;
-    --clr-black: 330 3% 13%;
-    --clr-dark: 300 20% 11%;
-    --clr-muted: 300 6% 57%;
+    --color-light-p: hsl(78, 65%, 73%);
+    --color-primary-p: hsl(177, 42%, 22%);
+
+    --white: 0 0% 98%;
+    --lighter: 273 7% 96%;
+    --light: 273 5% 92%;
+    --primary: 273 53% 37%;
+    --accent: 305 100% 50%;
+    --black: 273 30% 8%;
+    --grey: 273 10% 40%;
+    --muted: 197 20% 45%;
+
+    --color-white: hsl(0 0% 98%);
+    --color-lighter: hsl(273 7% 96%);
+    --color-light: hsl(273 5% 92%);
+    --color-primary: hsl(273 53% 37%);
+    --color-accent: hsl(305, 100%, 50%);
+    --color-black: hsl(273 30% 8%);
+    --color-grey: hsl(273 7% 40%);
+    --color-muted: hsl(197, 20%, 45%);
 }

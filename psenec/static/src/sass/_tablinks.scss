@@ -1,0 +1,55 @@
+.tab-links {
+    width: 100%;
+    overflow-x: auto;
+
+    .wrapper {
+        width: fit-content;
+        display: flex;
+        column-gap: 1.5rem;
+        padding: .1rem;
+        padding-bottom: .25rem;
+
+        .tab {
+            display: flex;
+            column-gap: .75rem;
+            color: hsl(var(--muted));
+            padding: .25rem .75rem;
+            padding-bottom: .8rem;
+            position: relative;
+            
+            &::after{
+                position: absolute;
+                content: '';
+                bottom: 0;
+                left: 0;
+                height: .2rem;
+                background-color: transparent;
+                border-radius: .25rem;
+                width: 100%;
+                animation: grow 1s ease-out 150ms;
+            }
+            
+            &:hover:not(.active){
+                color: hsl(var(--black));
+            }
+            
+            &.active {
+                font-weight: 600;
+                color: hsl(var(--primary));
+                
+                &::after{
+                    background-color: hsl(var(--primary));
+                }
+            }
+        }
+    }
+}
+
+@keyframes grow {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}

@@ -54,6 +54,7 @@ MY_APPS = [
     'project.Projects',
     'project.Materials',
     'project.Quotations',
+    'project.Items',
 
     'finance.Expenses',
     'finance.LabourCostings',

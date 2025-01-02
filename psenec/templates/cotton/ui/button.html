@@ -1,22 +1,22 @@
 
 <button type="{% if type %}{{ type }}{% else %}button{% endif %}" 
-    class="rounded-md transition-all font-semibold
+    class="rounded-lg transition-all font-medium
     {% if variant == 'danger' %}bg-red-600 text-white hover:bg-red-700/80
     {% elif variant == 'ghost' %}bg-transparent text-dark hover:text-primary
     {% elif variant == 'muted' %}bg-transparent text-dark hover:bg-muted
     {% elif variant == 'outline-primary' %}bg-transparent text-primary outline outline-2 border-2 border-transparent outline-primary hover:bg-primary/90 hover:text-white hover:border-white
     {% elif variant == 'outline-green' %}bg-transparent text-green-600 outline outline-2 border-2 border-transparent outline-green-600 hover:bg-green-400 hover:text-white hover:border-white
     {% else %}bg-primary text-white hover:bg-primary/80{% endif %}
-    
-    {% if size == 'sm' %}h-8 text-sm grid place-content-center px-2
+
+    {% if size == 'sm' %}h-6 text-sm grid place-content-center px-2
     {% elif size == 'icon' %}h-10 w-10 grid place-content-center
     {% elif size == 'icon_sm' %}h-8 w-8 text-sm grid place-content-center
-    {% else %}h-10 text-sm grid place-content-center px-3{% endif %}
+    {% else %}h-10 grid place-content-center px-3{% endif %}
     {{ class }}"
     {{ vars|safe }} id="{{ id }}">
     {% if text or icon %}
     <div class="flex items-center justify-center gap-x-3">
-        {% if icon %} <i class="{{ icon }} {% if size == 'icon_sm' %}text-sm{% else %}text-lg{% endif %}"></i> {% endif %}
+        {% if icon %} <i class="{{ icon }}"></i> {% endif %}
         {% if text %} <span>{{ text }}</span> {% endif %}
     </div>
     {% endif %}

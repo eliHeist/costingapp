@@ -3,7 +3,9 @@
      {% if trigger_button %}
      {{ trigger_button }}
      {% else %}
-     <c-ui.button id="{{ button_id }}" text="Add Project" icon="fas fa-plus" size="base" variant="{% if button_variant %}{{ button_variant }}{% endif %}" vars='@click="open = true"' />
+     <c-ui.button id="{{ button_id }}" text="{{ trigger_text }}" size="base" 
+        icon="{% if button_icon %}{{ button_icon }}{% else %}fas fa-plus{% endif %}" 
+        variant="{% if button_variant %}{{ button_variant }}{% endif %}" vars='@click="open = true"' />
      {% endif %}
 
     <div class="absolute min-h-screen z-[55]" x-show="open" x-cloak="">

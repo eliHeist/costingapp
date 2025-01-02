@@ -1887,6 +1887,58 @@ aside.side-bar main.content nav .link.focus{
   line-height: 1;
 }
 
+.tab-links {
+  width: 100%;
+  overflow-x: auto;
+}
+.tab-links .wrapper {
+  width: -moz-fit-content;
+  width: fit-content;
+  display: flex;
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+  padding: 0.1rem;
+  padding-bottom: 0.25rem;
+}
+.tab-links .wrapper .tab {
+  display: flex;
+  -moz-column-gap: 0.75rem;
+       column-gap: 0.75rem;
+  color: hsl(var(--muted));
+  padding: 0.25rem 0.75rem;
+  padding-bottom: 0.8rem;
+  position: relative;
+}
+.tab-links .wrapper .tab::after {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  height: 0.2rem;
+  background-color: transparent;
+  border-radius: 0.25rem;
+  width: 100%;
+  animation: grow 1s ease-out 150ms;
+}
+.tab-links .wrapper .tab:hover:not(.active) {
+  color: hsl(var(--black));
+}
+.tab-links .wrapper .tab.active {
+  font-weight: 600;
+  color: hsl(var(--primary));
+}
+.tab-links .wrapper .tab.active::after {
+  background-color: hsl(var(--primary));
+}
+
+@keyframes grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
 body {
   font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   overflow: hidden;
@@ -2190,32 +2242,14 @@ dialog::backdrop{
   .\@4xl\:grid-flow-col{
     grid-auto-flow: column;
   }
-  .\@4xl\:grid-cols-none{
-    grid-template-columns: none;
-  }
   .\@4xl\:justify-end{
     justify-content: flex-end;
   }
   .\@4xl\:pl-4{
     padding-left: 1rem;
   }
-  .\@4xl\:\[grid-template-columns\:_1fr\]{
-    grid-template-columns: 1fr;
-  }
-  .\@4xl\:\[grid-template-columns\:_1fr_1fr\]{
-    grid-template-columns: 1fr 1fr;
-  }
-  .\@4xl\:\[grid-template-columns\:_1fr_1fr_1fr\]{
-    grid-template-columns: 1fr 1fr 1fr;
-  }
   .\@4xl\:\[grid-template-columns\:_1fr_1fr_1fr_2fr\]{
     grid-template-columns: 1fr 1fr 1fr 2fr;
-  }
-  .\@4xl\:\[grid-template-columns\:_1fr_1fr_\]{
-    grid-template-columns: 1fr 1fr;
-  }
-  .\@4xl\:\[grid-template-columns\:_\]{
-    grid-template-columns: ;
   }
 }
 @media (min-width: 500px){

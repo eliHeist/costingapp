@@ -46,10 +46,23 @@ class ProjectsView(View):
 class ProjectDetailView(View):
     def get(self, request, pk):
         project = Project.objects.get(pk=pk)
+        customers = Customer.objects.all()
         context = {
-            'project': project
+            'project': project,
+            'customers': customers,
         }
-        return render(request, "Projects/project_detail_page.html", context)
+        return render(request, "Projects/project/landing.html", context)
+
+
+class ProjectParticularsView(View):
+    def get(self, request, pk):
+        project = Project.objects.get(pk=pk)
+        customers = Customer.objects.all()
+        context = {
+            'project': project,
+            'customers': customers,
+        }
+        return render(request, "Projects/project/particulars.html", context)
 
 
 class ProjectsFormView(View):

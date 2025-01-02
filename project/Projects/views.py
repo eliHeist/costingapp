@@ -10,7 +10,7 @@ from project.Projects.forms import ProjectModelForm
 
 class ProjectsView(View):
     def get(self, request):
-        projects = Project.objects.filter(is_active=True)
+        projects = Project.objects.filter(is_active=True).order_by('-created_at')
         customers = Customer.objects.all()
         context = {
             'projects': projects,
@@ -21,11 +21,17 @@ class ProjectsView(View):
     def post(self, request):
         print(request.POST)
         # Manually create the project from the POST data
+        cost = request.POST.get('cost_to_customer')
+        if cost:
+            cost = int(cost)
+        else:
+            cost = None
+            
         project_data = {
             'title': request.POST.get('name'),
             'description': request.POST.get('description'),
             'customer_id': request.POST.get('customer'),
-            'cost_to_customer': request.POST.get('cost_to_customer')
+            'cost_to_customer': cost
         }
         try:
             project = Project.objects.create(**project_data)

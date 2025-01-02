@@ -5,7 +5,7 @@ aside.side-bar {
     --link_padding: .75rem;
     $link_padding: .5rem;
 
-    z-index: 100;
+    z-index: 51;
     @apply bg-lighter;
     
     @include xl-max {

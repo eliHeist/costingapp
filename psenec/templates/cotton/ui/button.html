@@ -13,7 +13,7 @@
     {% elif size == 'icon_sm' %}h-8 w-8 text-sm grid place-content-center
     {% else %}h-10 text-sm grid place-content-center px-3{% endif %}
     {{ class }}"
-    {{ vars|safe }}>
+    {{ vars|safe }} id="{{ id }}">
     {% if text or icon %}
     <div class="flex items-center justify-center gap-x-3">
         {% if icon %} <i class="{{ icon }} {% if size == 'icon_sm' %}text-sm{% else %}text-lg{% endif %}"></i> {% endif %}

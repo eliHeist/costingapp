@@ -501,6 +501,12 @@ video {
 .z-50{
   z-index: 50;
 }
+.z-\[55\]{
+  z-index: 55;
+}
+.z-\[56\]{
+  z-index: 56;
+}
 .col-span-2{
   grid-column: span 2 / span 2;
 }
@@ -1383,7 +1389,7 @@ video {
 }
 aside.side-bar {
   --link_padding: .75rem;
-  z-index: 100;
+  z-index: 51;
   --tw-bg-opacity: 1;
   background-color: hsl(var(--lighter) / var(--tw-bg-opacity));
 }
@@ -2192,6 +2198,24 @@ dialog::backdrop{
   }
   .\@4xl\:pl-4{
     padding-left: 1rem;
+  }
+  .\@4xl\:\[grid-template-columns\:_1fr\]{
+    grid-template-columns: 1fr;
+  }
+  .\@4xl\:\[grid-template-columns\:_1fr_1fr\]{
+    grid-template-columns: 1fr 1fr;
+  }
+  .\@4xl\:\[grid-template-columns\:_1fr_1fr_1fr\]{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .\@4xl\:\[grid-template-columns\:_1fr_1fr_1fr_2fr\]{
+    grid-template-columns: 1fr 1fr 1fr 2fr;
+  }
+  .\@4xl\:\[grid-template-columns\:_1fr_1fr_\]{
+    grid-template-columns: 1fr 1fr;
+  }
+  .\@4xl\:\[grid-template-columns\:_\]{
+    grid-template-columns: ;
   }
 }
 @media (min-width: 500px){

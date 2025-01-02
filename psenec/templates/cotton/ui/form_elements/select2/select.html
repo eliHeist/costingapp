@@ -24,7 +24,7 @@
             }
         })
     },
-    async init(){
+    watchOptionsForEventListeners(){
         let options = this.$refs.options.querySelectorAll('.option')
         options.forEach(element => {
             if (element.getAttribute('aria-selected') == 'true') {
@@ -42,6 +42,33 @@
                 }
             })
         });
+    },
+    optionsMutationObserver(){
+        // if the inner HTML of the options is changed
+        const observer = new MutationObserver((mutationsList) => {
+            console.log('Observer triggered')
+            for (const mutation of mutationsList) {
+                console.log(`Mutation: ${mutation.type}, ${mutation}`)
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                    console.log('Inner HTML changed.')
+                    this.watchOptionsForEventListeners()
+                }
+            }
+        })
+
+        const config = {
+            childList: true,
+            subtree: true,
+            characterData: true
+        }
+
+        const parentDiv = this.$refs.options
+
+        observer.observe(parentDiv, config)
+    },
+    async init(){
+        this.watchOptionsForEventListeners()
+        this.optionsMutationObserver()
     }
 }">{% comment %}{% endcomment %}
     {% if label %}

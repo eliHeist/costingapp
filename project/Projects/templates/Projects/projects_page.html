@@ -28,7 +28,7 @@
         <div class="bg-orange-200 rounded-lg w-16 h-16 hidden @lg:grid place-content-center opacity-0">
             <i class="fa-solid fa-bars-progress text-2xl text-orange-800"></i>
         </div>
-        <div class="grid grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @4xl:grid-flow-col @4xl:grid-cols-none flex-1 justify-stretch">
+        <div class="grid grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @4xl:grid-flow-col @4xl:[grid-template-columns:_1fr_1fr_1fr_2fr] flex-1 justify-stretch">
             <div class="grid justify-start text-left py-4 border-t-2 border-r-2 border-light">
                 <p class="text-2xl font-bold">687</p>
                 <p class="text-sm">Items</p>
@@ -73,11 +73,11 @@
 <c-layouts.base page_title="Projects">
     <div class="flex flex-wrap justify-between">
         <h2 class="title-3 mb-8">Projects page</h2>
-        <form method="post" hx-post="{% url 'Projects:projects' %}" hx-swap="afterbegin" hx-target="#project_list" hx-indicator="#spinner">
+        <form id="project_form" method="post" hx-post="{% url 'Projects:projects' %}" hx-swap="afterbegin" hx-target="#project_list" hx-indicator="#spinner">
             <div id="token">
                 {% csrf_token %}
             </div>
-            <c-ui.drawer title="New Project Form">
+            <c-ui.drawer title="New Project Form" button_id="drawerTrigger">
                 <div class="grid gap-6">
                     <c-ui.form_elements.input required="True" label="Name" name="name" type="text" placeholder="Give the project a name" />
                     <c-ui.form_elements.textarea label="Description" name="description" placeholder="Describe the project." />
@@ -117,10 +117,23 @@
                                 // close the form
                                 this.customer_form = false
                             } else {console.error(response.error)}
+                        },
+                        postListener(){
+                            const form = document.querySelector('#project_form')
+
+                            form.addEventListener('htmx:afterRequest', (event) => {
+                                console.log('prj POST completed')
+                                document.querySelector('#drawerTrigger').click()
+                                form.reset()
+                                window.location.reload()
+                            })
+                        },
+                        init(){
+                            this.postListener()
                         }
                     }">
                         <div x-ref="option_template" class="hidden">
-                            <c-ui.form_elements.select2.option value='rep_value' search_values='rep_search_values' text='rep_text' />
+                            <c-ui.form_elements.select2.option value='rep_value' search_values='rep_search_values' text='rep_text' selected="true" />
                         </div>
                         <c-ui.form_elements.select2.select required="True" label="Customer" name="customer" id="customer_select" action="True" action_icon="fas fa-plus text-green-600" click_commands="customer_form = true" class="customer_select">
                             <c-slot name="options">
@@ -165,7 +178,7 @@
             <h3 class="title-2">Ongoing Projects</h3>
             <p>{{ projects.count }} project{% if projects.count > 1 %}s{% endif %}</p>
         </div>
-        <div class="grid" id="project_list">
+        <div class="grid gap-6" id="project_list">
             {% for project in projects %}{% partial project %}{% endfor %}
         </div>
     </div>

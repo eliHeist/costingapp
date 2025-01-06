@@ -25,8 +25,8 @@
                 height: .2rem;
                 background-color: transparent;
                 border-radius: .25rem;
-                width: 100%;
-                animation: grow 1s ease-out 150ms;
+                width: 0;
+                animation: grow 2s forwards;
             }
             
             &:hover:not(.active){

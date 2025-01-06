@@ -3,22 +3,27 @@
 }
 
 .title {
-    @apply text-xl;
+    font-size: 1.25rem /* 20px */;
+    line-height: 1.75rem /* 28px */;
     @extend .ttl;
 }
 .title-2 {
-    @apply text-2xl;
+    font-size: 1.5rem /* 24px */;
+    line-height: 2rem /* 32px */;
     @extend .ttl;
 }
 .title-3 {
-    @apply text-3xl;
+    font-size: 1.875rem /* 30px */;
+    line-height: 2.25rem /* 36px */;
     @extend .ttl;
 }
 .title-4 {
-    @apply text-4xl;
+    font-size: 2.25rem /* 36px */;
+    line-height: 2.5rem /* 40px */;
     @extend .ttl;
 }
 .title-5 {
-    @apply text-5xl;
+    font-size: 3rem /* 48px */;
+    line-height: 1;
     @extend .ttl;
 }

@@ -1,22 +1,6 @@
 {% load static partials custom_filters %}
 
-{% partialdef item_row %}
-<c-ui.table.tr id="itemRow-{{ item.pk }}" class="slide-up">
-    <c-ui.table.td>{{ item.name }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.type.name }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.code }}</c-ui.table.td>
-    <c-ui.table.td>
-        {% if item.costing_method == 'PU' %}{{ item.get_unit_name_display }} ({{ item.unit_name }})
-        {% else %}
-        <span>({{ item.min_height }} x {{ item.min_length }})</span>
-        <span>-</span>
-        <span>({{ item.max_height }} x {{ item.max_length }})</span>
-        {% endif %}
-    </c-ui.table.td>
-    <c-ui.table.td class="text-right">{{ item.fabrication_cost|add_commas }}</c-ui.table.td>
-    <c-ui.table.td class="text-right">{{ item.spraying_cost|add_commas }}</c-ui.table.td>
-</c-ui.table.tr>
-{% endpartialdef %}
+
 
 <c-layouts.base title="Labor Fees Table">
     <div>
@@ -65,45 +49,24 @@
             {% endif %}
         </div>
         {% if labor_fees %}
-        {% for table in labor_fees %}
-        {% if table.item_costings.all %}
-        <c-ui.table.root title="Table {{ table.id }}: {{ table.effective_start_date|date:" M d, Y" }} - {{ table.effective_end_date|date:"M d, Y" }}">
-            <c-slot name="vars">
-                <a href="{% url 'LabourCostings:labor-table-edit' table.pk %}">
-                    <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-primary" />
-                </a>
-            </c-slot>
-            <c-slot name="headers">
-                <c-ui.table.th>Name</c-ui.table.th>
-                <c-ui.table.th>Type</c-ui.table.th>
-                <c-ui.table.th>Code</c-ui.table.th>
-                <c-ui.table.th>Size range</c-ui.table.th>
-                <c-ui.table.th class="text-right">Fabrication</c-ui.table.th>
-                <c-ui.table.th class="text-right">Spraying</c-ui.table.th>
-            </c-slot>
-            <c-slot name="data">
-                {% for item in table.item_costings.all %}
-                {% partial item_row %}
-                {% empty %}
-                <p class="text-lg">no items yet</p>
-                {% endfor %}
-            </c-slot>
-        </c-ui.table.root>
-        {% else %}
-        <div class="grid place-content-center gap-6">
-            <p class="text-xl text-center">
-                Table {{ table.id }}: {{ table.effective_start_date|date:"M d, Y" }} - {{
-                table.effective_end_date|date:"M d, Y" }} has no items.
-            </p>
-            <div class="grid justify-center">
-                <a href="{% url 'LabourCostings:labor-table-edit' table.id %}">
-                    <c-ui.button text="Get started adding items" />
-                </a>
-            </div>
-        </div>
-
-        {% endif %}
-        {% endfor %}
+            {% for table in labor_fees %}
+                {% if table.item_costings.all %}
+                <c-psenec.labor-table />
+                {% else %}
+                    <div class="grid place-content-center gap-6">
+                        <p class="text-xl text-center">
+                            Table {{ table.id }}: {{ table.effective_start_date|date:"M d, Y" }} - {{
+                            table.effective_end_date|date:"M d, Y" }} has no items.
+                        </p>
+                        <div class="grid justify-center">
+                            <a href="{% url 'LabourCostings:labor-table-edit' table.id %}">
+                                <c-ui.button text="Get started adding items" />
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+            {% endfor %}
         {% else %}
         <p class="text-3xl">
             No active labor table, create one to continue

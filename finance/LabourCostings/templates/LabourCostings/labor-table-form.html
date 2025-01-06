@@ -1,120 +1,7 @@
 {% load partials custom_filters %}
 
 {% partialdef itemrow %}
-<c-ui.table.tr id="itemRow-{{ item.pk }}" class="slide-up">
-    <c-ui.table.td>{{ item.name }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.type.name }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.code }}</c-ui.table.td>
-    <c-ui.table.td>
-        {% if item.costing_method == 'PU' %}{{ item.get_unit_name_display }} ({{ item.unit_name }})
-        {% else %}
-        <span>({{ item.min_height }} x {{ item.min_length }})</span>
-        <span>-</span>
-        <span>({{ item.max_height }} x {{ item.max_length }})</span>
-        {% endif %}
-    </c-ui.table.td>
-    <c-ui.table.td class="text-right">{{ item.fabrication_cost|add_commas }}</c-ui.table.td>
-    <c-ui.table.td class="text-right">{{ item.spraying_cost|add_commas }}</c-ui.table.td>
-    <c-ui.table.td>
-        <div class="flex justify-end">
-            <c-ui.dialog id="itemFormDlg-{{ item.pk }}" icon="fas fa-edit" btn_size="icon_sm" btn_variant="ghost">
-                <form hx-post="{% url 'LabourCostings:labor-table-edit' table.id %}" hx-target="#itemRow-{{ item.pk }}"
-                    hx-swap="outerHTML" @submit="document.querySelector('#itemFormDlg-{{ item.pk }}').close()" x-data="{
-                    costing_method: '{{ item.costing_method }}',
-                    type_id: {{ item.type.pk }},
-                    init(){},
-                }">
-                    {% csrf_token %}
-                    <div class="@container/item">
-                        <div class="grid gap-4">
-                            <div class="grid gap-2 @sm/item:grid-cols-2 @xl/item:grid-cols-4">
-                                <!-- item id -->
-                                <input type="text" class="hidden" name="id" value="{{ item.pk }}">
-                                <!-- name -->
-                                <c-ui.input name="name" label="Name" value="{{ item.name }}"
-                                    class="@sm/item:col-span-2" />
-                                <!-- type -->
-                                <c-ui.select name="type" label="Type" class="@sm/item:col-span-2" action="true"
-                                    action_icon="fas fa-plus"
-                                    action_vars="@click='document.getElementById(`type_dlg`).showModal()'">
-                                    <option value="">---select---</option>
-                                    <template x-for="type in types">
-                                        <option :value="type.id" x-text="type.name" :selected="type.id == type_id">
-                                        </option>
-                                    </template>
-                                </c-ui.select>
-                                <!-- code -->
-                                <c-ui.input name="code" label="Code" value="{{ item.code }}" />
-                                <!-- unit -->
-                                <c-ui.select name="unit_name" label="Unit name" vars="x-ref='unit_select'">
-                                    {% for unit in table.get_all_units %}
-                                    <option value="{{ unit.symbol }}" {% if unit.symbol == item.unit_name %}selected{% endif %}>{{ unit.name }}, ({{ unit.symbol }})</option>
-                                    {% endfor %}
-                                </c-ui.select>
-                                <!-- fabrication cost -->
-                                <c-ui.input name="fabrication_cost" label="Fabrication" icon="fas fa-dollar-sign"
-                                    value="{{ item.fabrication_cost|add_commas }}"
-                                    vars="x-mask:dynamic='$money($input)' inputmode='numeric'"
-                                    class="@xl/item:col-span-2" />
-                                <!-- spraying cost -->
-                                <c-ui.input name="spraying_cost" label="Spraying" icon="fas fa-dollar-sign"
-                                    value="{{ item.spraying_cost|add_commas }}"
-                                    vars="x-mask:dynamic='$money($input)' inputmode='numeric'"
-                                    class="@xl/item:col-span-2" />
-                            </div>
-                            <!-- costing method -->
-                            <div class="flex gap-4">
-                                <fieldset>
-                                    <label for="costing_method_PU">
-                                        <input type="radio" name="costing_method" value="PU" id="costing_method_PU"
-                                            :checked="costing_method == 'PU'" @change="costing_method = 'PU'">
-                                        Per Unit</label>
-                                </fieldset>
-                                <fieldset>
-                                    <label for="costing_method_BM">
-                                        <input type="radio" name="costing_method" value="BM" id="costing_method_BM"
-                                            :checked="costing_method == 'BM'" @change="costing_method = 'BM'">
-                                        Measurements</label>
-                                </fieldset>
-                            </div>
-                            <!-- costing by measurements -->
-                            <template x-if="costing_method=='BM'">
-                                <div class="grid justify-items-center gap-y-4 md:flex md:gap-x-4 items-center">
-                                    <div class="flex items-center gap-x-2">
-                                        <!-- min height -->
-                                        <c-ui.input name="min_height" placeholder="height" type="number"
-                                            vars='step="0.01"' value="{{ item.min_height }}" />
-                                        <span>
-                                            <i class="fas fa-xmark"></i>
-                                        </span>
-                                        <!-- min length -->
-                                        <c-ui.input name="min_length" placeholder="length" type="number"
-                                            vars='step="0.01"' value="{{ item.min_length }}" />
-                                    </div>
-                                    <span class="text-xs font-bold">TO</span>
-                                    <div class="flex items-center gap-x-2">
-                                        <!-- max height -->
-                                        <c-ui.input name="max_height" placeholder="height" type="number"
-                                            vars='step="0.01"' value="{{ item.max_height }}" />
-                                        <span>
-                                            <i class="fas fa-xmark"></i>
-                                        </span>
-                                        <!-- max length -->
-                                        <c-ui.input name="max_length" placeholder="length" type="number"
-                                            vars='step="0.01"' value="{{ item.max_length }}" />
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <c-ui.button icon="fas fa-save" text="Save" type="submit" />
-                    </div>
-                </form>
-            </c-ui.dialog>
-        </div>
-    </c-ui.table.td>
-</c-ui.table.tr>
+
 {% endpartialdef %}
 
 <c-layouts.base title="Labor Fees Form">
@@ -171,30 +58,31 @@
         <section>
             <div id="token">{% csrf_token %}</div>
             <div class="grid md:flex md:flex-row-reverse gap-3 mb-6">
-                <div class="items flex-1 bg-white p-2">
-                    <c-ui.table.root title="Items" description="Items are priced by measurements or per unit"
-                        body_id="itemTableBody">
-                        <c-slot name="headers">
-                            <c-ui.table.th>Name</c-ui.table.th>
-                            <c-ui.table.th>Type</c-ui.table.th>
-                            <c-ui.table.th>Code</c-ui.table.th>
-                            <c-ui.table.th>Size range</c-ui.table.th>
-                            <c-ui.table.th class="text-right">Fabrication</c-ui.table.th>
-                            <c-ui.table.th class="text-right">Spraying</c-ui.table.th>
-                            <c-ui.table.th></c-ui.table.th>
-                        </c-slot>
-                        <c-slot name="data">
-                            {% for item in table.item_costings.all %}
-                            {% partial itemrow %}
-                            {% endfor %}
-                        </c-slot>
-                    </c-ui.table.root>
+                <div class="items flex-1">
+                    <div class="@container">
+                        <c-ui.table.root title="Items" description="Items are priced by measurements or per unit" body_id="itemTableBody" table_class="hidden md:table">
+                            <c-slot name="headers">
+                                <c-ui.table.th>Name</c-ui.table.th>
+                                <c-ui.table.th class="hidden @3xl:table-cell">Type</c-ui.table.th>
+                                <c-ui.table.th class="hidden @4xl:table-cell">Code</c-ui.table.th>
+                                <c-ui.table.th>Size range</c-ui.table.th>
+                                <c-ui.table.th class="text-right">Fabrication</c-ui.table.th>
+                                <c-ui.table.th class="text-right">Spraying</c-ui.table.th>
+                                <c-ui.table.th></c-ui.table.th>
+                            </c-slot>
+                            <c-slot name="data">
+                                {% for item in table.item_costings.all %}
+                                <c-psenec.labour-itemrow />
+                                {% endfor %}
+                            </c-slot>
+                        </c-ui.table.root>
+                    </div>
                     <div class="flex justify-end mt-4">
                         <c-ui.button text="Add Item" icon="fas fa-plus" variant="outline-primary"
                             vars="@click='handleAddItem()'" />
                     </div>
-                    <c-ui.dialog id="itemFormDlg">
-                        <form hx-post="{% url 'LabourCostings:labor-table-edit' table.id %}" hx-target="#itemTableBody"
+                    <c-ui.dialog id="itemFormDlg" size="xl">
+                        <form hx-post="{% url 'LabourCostings:labor-table-edit' table.id %}"        hx-target="#itemTableBody"
                             hx-swap="beforeend transition:true" @submit="document.querySelector('#itemFormDlg').close()"
                             x-data="{
                             costing_method: 'PU',
@@ -292,7 +180,7 @@
             </div>
 
         </section>
-        <c-ui.dialog id="type_dlg">
+        <c-ui.dialog id="type_dlg" size="sm">
             <form class="grid gap-y-2" @submit.prevent="handleAddType(event)">
                 <p class="pb-4">An item type name e.g Door, Window is required</p>
                 <c-ui.input label="Name" name="name" required="true" />

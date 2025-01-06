@@ -5,6 +5,8 @@
     {% elif variant == 'ghost' %}bg-transparent text-dark hover:text-primary
     {% elif variant == 'muted' %}bg-transparent text-dark hover:bg-muted
     {% elif variant == 'outline-primary' %}bg-transparent text-primary outline outline-2 border-2 border-transparent outline-primary hover:bg-primary/90 hover:text-white hover:border-white
+    {% elif variant == 'outline-black' %}bg-transparent text-black outline outline-2 border-2 border-transparent outline-black hover:bg-black/90 hover:text-white hover:border-white
+    {% elif variant == 'outline-grey' %}bg-transparent text-grey outline outline-2 border-2 border-transparent outline-grey hover:bg-grey/90 hover:text-white hover:border-white
     {% elif variant == 'outline-green' %}bg-transparent text-green-600 outline outline-2 border-2 border-transparent outline-green-600 hover:bg-green-400 hover:text-white hover:border-white
     {% else %}bg-primary text-white hover:bg-primary/80{% endif %}
 
@@ -13,7 +15,7 @@
     {% elif size == 'icon_sm' %}h-8 w-8 text-sm grid place-content-center
     {% else %}h-10 grid place-content-center px-3{% endif %}
     {{ class }}"
-    {{ vars|safe }} id="{{ id }}">
+    {{ vars|safe }} id="{{ id }}" {{ attrs }}>
     {% if text or icon %}
     <div class="flex items-center justify-center gap-x-3">
         {% if icon %} <i class="{{ icon }}"></i> {% endif %}

@@ -666,6 +666,9 @@ video {
 .w-4{
   width: 1rem;
 }
+.w-4\/5{
+  width: 80%;
+}
 .w-5{
   width: 1.25rem;
 }
@@ -683,6 +686,9 @@ video {
 }
 .max-w-\[35rem\]{
   max-width: 35rem;
+}
+.max-w-\[90\%\]{
+  max-width: 90%;
 }
 .max-w-lg{
   max-width: 32rem;
@@ -1196,6 +1202,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(180 83 9 / var(--tw-text-opacity));
 }
+.text-black{
+  --tw-text-opacity: 1;
+  color: hsl(var(--black) / var(--tw-text-opacity));
+}
 .text-gray-400{
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -1288,8 +1298,14 @@ video {
 .outline-2{
   outline-width: 2px;
 }
+.outline-black{
+  outline-color: hsl(var(--black) / 1);
+}
 .outline-green-600{
   outline-color: #16a34a;
+}
+.outline-grey{
+  outline-color: hsl(var(--grey) / 1);
 }
 .outline-primary{
   outline-color: hsl(var(--primary) / 1);
@@ -1917,8 +1933,8 @@ aside.side-bar main.content nav .link.focus{
   height: 0.2rem;
   background-color: transparent;
   border-radius: 0.25rem;
-  width: 100%;
-  animation: grow 1s ease-out 150ms;
+  width: 0;
+  animation: grow 2s forwards;
 }
 .tab-links .wrapper .tab:hover:not(.active) {
   color: hsl(var(--black));
@@ -2030,7 +2046,6 @@ dialog {
 }
 @media (min-width: 768px) {
   dialog {
-    min-width: 35rem;
     padding: 1.5rem;
     padding-top: 1.75rem;
   }
@@ -2066,6 +2081,9 @@ dialog::backdrop{
   --tw-border-opacity: 1;
   border-color: hsl(var(--white) / var(--tw-border-opacity));
 }
+.hover\:bg-black\/90:hover{
+  background-color: hsl(var(--black) / 0.9);
+}
 .hover\:bg-blue-600:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
@@ -2077,6 +2095,9 @@ dialog::backdrop{
 .hover\:bg-green-400:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
+}
+.hover\:bg-grey\/90:hover{
+  background-color: hsl(var(--grey) / 0.9);
 }
 .hover\:bg-light\/40:hover{
   background-color: hsl(var(--light) / 0.4);
@@ -2168,6 +2189,9 @@ dialog::backdrop{
   }
 }
 @container (min-width: 36rem){
+  .\@xl\:table-cell{
+    display: table-cell;
+  }
   .\@xl\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2194,6 +2218,9 @@ dialog::backdrop{
 @container (min-width: 42rem){
   .\@2xl\:col-span-4{
     grid-column: span 4 / span 4;
+  }
+  .\@2xl\:table-cell{
+    display: table-cell;
   }
   .\@2xl\:grid{
     display: grid;
@@ -2225,13 +2252,22 @@ dialog::backdrop{
   }
 }
 @container (min-width: 48rem){
+  .\@3xl\:table-cell{
+    display: table-cell;
+  }
   .\@3xl\:grid-flow-col{
     grid-auto-flow: column;
+  }
+  .\@3xl\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @container (min-width: 56rem){
   .\@4xl\:col-span-1{
     grid-column: span 1 / span 1;
+  }
+  .\@4xl\:table-cell{
+    display: table-cell;
   }
   .\@4xl\:grid{
     display: grid;
@@ -2266,6 +2302,27 @@ dialog::backdrop{
     width: -moz-fit-content;
     width: fit-content;
   }
+  .sm\:w-\[15rem\]{
+    width: 15rem;
+  }
+  .sm\:w-\[20rem\]{
+    width: 20rem;
+  }
+  .sm\:w-\[\]{
+    width: ;
+  }
+  .sm\:w-\[30rem\]{
+    width: 30rem;
+  }
+  .sm\:w-\[40rem\]{
+    width: 40rem;
+  }
+  .sm\:w-\[50rem\]{
+    width: 50rem;
+  }
+  .sm\:w-\[60rem\]{
+    width: 60rem;
+  }
   .sm\:min-w-\[450px\]{
     min-width: 450px;
   }
@@ -2283,6 +2340,9 @@ dialog::backdrop{
   }
 }
 @media (min-width: 768px){
+  .md\:static{
+    position: static;
+  }
   .md\:inset-y-4{
     top: 1rem;
     bottom: 1rem;
@@ -2292,6 +2352,15 @@ dialog::backdrop{
   }
   .md\:flex{
     display: flex;
+  }
+  .md\:table{
+    display: table;
+  }
+  .md\:grid{
+    display: grid;
+  }
+  .md\:hidden{
+    display: none;
   }
   .md\:flex-row-reverse{
     flex-direction: row-reverse;
@@ -2315,9 +2384,6 @@ dialog::backdrop{
   }
   .xl\:w-5\/12{
     width: 41.666667%;
-  }
-  .xl\:min-w-\[40rem\]{
-    min-width: 40rem;
   }
   .xl\:text-3xl{
     font-size: 1.875rem;

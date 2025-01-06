@@ -1,7 +1,92 @@
 {% extends 'Projects/project/project_detail_page.html' %}
+{% load static partials custom_filters %}
+
+{% partialdef item_row %}
+<c-ui.table.tr id="itemRow-{{ item.pk }}" class="slide-up">
+    <c-ui.table.td>{{ item.description }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.quantity }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.height }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.length }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.area }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.costing.name }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.employee.name }}</c-ui.table.td>
+    <c-ui.table.td class="text-right">{{ item.fabricationCost|add_commas }}</c-ui.table.td>
+    <c-ui.table.td class="text-right">{{ item.sprayingCost|add_commas }}</c-ui.table.td>
+</c-ui.table.tr>
+{% endpartialdef item_row %}
+
+
+{% partialdef table %}
+<div>
+    <c-ui.table.root title="{{ item_group.description }}">
+        <c-slot name="vars">
+            <a href="#">
+                <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-primary" />
+            </a>
+        </c-slot>
+        <c-slot name="headers">
+            <c-ui.table.th>Description</c-ui.table.th>
+            <c-ui.table.th class="text-center">Quantity</c-ui.table.th>
+            <c-ui.table.th class="text-center">Height</c-ui.table.th>
+            <c-ui.table.th class="text-center">Length</c-ui.table.th>
+            <c-ui.table.th class="text-center">Area</c-ui.table.th>
+            <c-ui.table.th>Type</c-ui.table.th>
+            <c-ui.table.th>Employee</c-ui.table.th>
+            <c-ui.table.th class="text-right">Fabrication</c-ui.table.th>
+            <c-ui.table.th class="text-right">Spraying</c-ui.table.th>
+        </c-slot>
+        <c-slot name="data">
+            {% for item in table.item_costings.all %}
+            {% partial item_row %}
+            {% endfor %}
+        </c-slot>
+    </c-ui.table.root>
+</div>
+{% endpartialdef table %}
+
+{% partialdef main %}
+<div>
+    <form id="project_form" method="post" hx-post="{% url 'Projects:detail' project.pk %}" hx-target="html" hx-indicator="#spinner" x-data="{
+        show_form: true,
+    }">
+        <div id="token">
+            {% csrf_token %}
+        </div>
+        <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
+            <div class="flex gap-x-6 gap-y-3 flex-wrap">
+                <c-ui.button text="Add a group" icon="fas fa-plus" variant="outline-primary" vars="@click='show_form = !show_form'" size="md" />
+                <c-ui.drawer title="Active Labor Table" button_id="drawerTrigger1" button_icon="fas fa-table" trigger_text="View Active Labor Table" button_variant="outline-grey">
+                    {% if table %}
+                    {% include 'LabourCostings/components/labor-table.html' %}
+                    {% endif %}
+                </c-ui.drawer>
+            </div>
+            <div x-collapse x-cloak x-show="show_form">
+                <div class="grid gap-6 @3xl:grid-cols-2">
+                    <c-ui.form_elements.input required="True" label="Description" name="description" type="text" />
+                    <c-ui.form_elements.select label="Select a type (for the items)" required="true" name="costing">
+                        {% for type in types %}
+                        <option value="{{ type.id }}">{{ type.name }}</option>
+                        {% endfor %}
+                    </c-ui.form_elements.select>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="groups">
+        <div class="" id="items_spinner">
+            <div class="aspect-square w-16 h-16 grid place-content-center animate-spin ">
+                <i class="fas fa-circle-notch text-xl"></i>
+            </div>
+        </div>
+        {% for table in item_groups %}
+        {% partial table %}
+        {% endfor %}
+    </div>
+</div>
+{% endpartialdef main %}
+
 
 {% block slot %}
-<div>
-    
-</div>
+{% partial main %}
 {% endblock %}

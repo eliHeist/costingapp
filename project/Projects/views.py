@@ -1,8 +1,10 @@
+from datetime import date
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
+from finance.LabourCostings.models import ItemType, LabourTable
 from people.Customers.models import Customer
 from project.Projects.models import Project
 from project.Projects.forms import ProjectModelForm
@@ -56,11 +58,16 @@ class ProjectDetailView(View):
 
 class ProjectParticularsView(View):
     def get(self, request, pk):
+        today = date.today()
         project = Project.objects.get(pk=pk)
         customers = Customer.objects.all()
+        types = ItemType.objects.all()
+        labour_table = LabourTable.objects.all().prefetch_related('item_costings').filter(effective_end_date__gte=today).filter(effective_start_date__lte=today)
         context = {
             'project': project,
             'customers': customers,
+            'types': types,
+            'table': labour_table,
         }
         return render(request, "Projects/project/particulars.html", context)
 

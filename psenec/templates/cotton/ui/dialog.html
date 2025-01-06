@@ -2,7 +2,14 @@
     {% if label or icon %}
     <c-ui.button size="{{ btn_size }}" variant="{{ btn_variant }}" text="{% if label %}{{ label }}{% endif %}" icon="{{ icon }}" type="button" vars="@click='$refs.dlg.showModal()'" />
     {% endif %}
-    <dialog id="{{ id }}" x-ref="dlg" class="xl:min-w-[40rem]">
+    <dialog id="{{ id }}" x-ref="dlg" 
+        class="w-full 
+            {% if size == 'sm' %} sm:w-[20rem] 
+            {% elif size == 'md' %} sm:w-[30rem] 
+            {% elif size == 'base' %} sm:w-[40rem] 
+            {% elif size == 'lg' %} sm:w-[50rem] 
+            {% elif size == 'xl' %} sm:w-[60rem] 
+            {% else %}w-4/5{% endif %} max-w-[90%]" >
         <button class="dlg_close_button" @click='$refs.dlg.close()'>
             <i class="fas fa-xmark text-lg text-muted hover:text-dark"></i>
         </button>

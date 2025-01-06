@@ -31,8 +31,10 @@ class LaborFeesView(View):
 class LaborFeesEditView(View):
     def get(self, request, pk):
         table = get_object_or_404(LabourTable.objects.prefetch_related('item_costings'), id=pk)
+        types = ItemType.objects.all()
         context = {
-            "table": table
+            "table": table,
+            "types": types,
         }
         template_name = "LabourCostings/labor-table-form.html"
 
@@ -42,6 +44,8 @@ class LaborFeesEditView(View):
         data = request.POST
         table = get_object_or_404(LabourTable, id=pk)
         # data looks like this <QueryDict: {'csrfmiddlewaretoken': ['udD5RpwbJJ3GGyTk1rg5GfdsxHIZQfeDuLCShFxaphnAfsxcP7qltBX3ruexwIMI'], 'id': [''], 'table_id': ['1'], 'name': ['SMALL WINDOW'], 'type': ['2'], 'code': ['B'], 'unit_name': ['m'], 'fabrication_cost': ['13,000'], 'spraying_cost': ['6,000'], 'costing_method': ['BM'], 'min_height': ['0.9'], 'min_length': ['0.9'], 'max_height': ['1.2'], 'max_length': ['1.2']}>
+
+        print(data)
 
         # if there is no id create a new item costing otherwise update the exixting one
         if data.get("id") == "":
@@ -75,10 +79,12 @@ class LaborFeesEditView(View):
             item.save()
         
         if request.htmx:
-            template_name = 'LabourCostings/labor-table-form.html#itemrow'
+            template_name = 'cotton/psenec/labour_itemrow.html'
+            types = ItemType.objects.all()
             context = {
                 "item": item,
-                "table": table
+                "table": table,
+                "types": types,
             }
             return render(request, template_name, context)
             

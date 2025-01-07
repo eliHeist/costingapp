@@ -26,10 +26,12 @@
                         </ul>
                         {% endif %}
                         <div class="grid gap-6 @xl:grid-cols-2">
-                            <c-ui.input label="Start Date" type="date" name="effective_start_date" required="true" />
-                            <c-ui.input label="End Date" type="date" name="effective_end_date" required="true" />
+                            <c-ui.form_elements.input label="Start Date" type="date" name="effective_start_date"
+                                required="true" />
+                            <c-ui.form_elements.input label="End Date" type="date" name="effective_end_date"
+                                required="true" />
                         </div>
-                        <!-- <c-ui.input label="Date Range" type="text" name="effective_date_range" required="true" id="litepicker" />
+                        <!-- <c-ui.form_elements.input label="Date Range" type="text" name="effective_date_range" required="true" id="litepicker" />
                         <div id="datepicker"></div> -->
                         <c-ui.button type="submit" text="Create Table" icon="fas fa-plus" />
 
@@ -49,24 +51,24 @@
             {% endif %}
         </div>
         {% if labor_fees %}
-            {% for table in labor_fees %}
-                {% if table.item_costings.all %}
-                <c-psenec.labor-table />
-                {% else %}
-                    <div class="grid place-content-center gap-6">
-                        <p class="text-xl text-center">
-                            Table {{ table.id }}: {{ table.effective_start_date|date:"M d, Y" }} - {{
-                            table.effective_end_date|date:"M d, Y" }} has no items.
-                        </p>
-                        <div class="grid justify-center">
-                            <a href="{% url 'LabourCostings:labor-table-edit' table.id %}">
-                                <c-ui.button text="Get started adding items" />
-                            </a>
-                        </div>
-                    </div>
-                {% endif %}
-                
-            {% endfor %}
+        {% for table in labor_fees %}
+        {% if table.item_costings.all %}
+        <c-psenec.labor-table />
+        {% else %}
+        <div class="grid place-content-center gap-6">
+            <p class="text-xl text-center">
+                Table {{ table.id }}: {{ table.effective_start_date|date:"M d, Y" }} - {{
+                table.effective_end_date|date:"M d, Y" }} has no items.
+            </p>
+            <div class="grid justify-center">
+                <a href="{% url 'LabourCostings:labor-table-edit' table.id %}">
+                    <c-ui.button text="Get started adding items" />
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% endfor %}
         {% else %}
         <p class="text-3xl">
             No active labor table, create one to continue

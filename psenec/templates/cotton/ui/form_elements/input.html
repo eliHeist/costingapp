@@ -1,8 +1,8 @@
-<div class="grid {{ class }}">
+<div class="grid {{ class }}" x-data>
     {% if label %}
     <label for="name" class="block text-sm font-semibold text-gray-800">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
     {% endif %}
-    <div class="flex items-center border border-gray-300 focus:border-gray-400 rounded-md {{ field_class }}">
+    <div class="flex items-center ring-1 ring-gray-300 hover:ring-gray-400 focus-within:ring-black focus-within:hover:ring-black rounded-md {{ field_class }}">
         {% if icon %}
         <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
         {% else %}
@@ -10,7 +10,7 @@
         {% endif %}
         <input type="{{ type }}" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" 
             class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" 
-            {{ vars|safe }} {% if required %}required{% endif %}>
+            {{ vars|safe }} {% if required %}required{% endif %} {{ attrs }}>
     </div>
     {% if errors %}
     <p class="text-red-600">{{ errors }}</p>

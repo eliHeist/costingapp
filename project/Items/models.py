@@ -6,12 +6,12 @@ from project.Projects.models import Project
 
 # Create your models here.
 class ItemGroup(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='item_groups')
     description = models.CharField(max_length=255)
     type = models.ForeignKey(ItemType, on_delete=models.CASCADE)
 
 class Item(models.Model):
-    item_group = models.ForeignKey(ItemGroup, on_delete=models.CASCADE)
+    item_group = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, related_name='items')
     description = models.CharField(max_length=255)
     quantity = models.FloatField()
     height = models.FloatField()

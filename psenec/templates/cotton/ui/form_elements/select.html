@@ -2,7 +2,7 @@
     {% if label %}
     <label for="name" class="block text-sm font-medium text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
     {% endif %}
-    <div class="flex items-center border border-gray-300 rounded-md">
+    <div class="flex items-center ring-1 ring-gray-300 hover:ring-gray-400 focus-within:ring-black focus-within:hover:ring-black rounded-md">
         {% if icon %}
         <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
         {% else %}

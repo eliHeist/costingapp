@@ -228,3 +228,12 @@ const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 function removeQuotes(text){
     return text.replace(/['"]/g, '')
 }
+
+function inputUpper(event) {
+    let transformedValue = event.target.value.toUpperCase()
+    event.target.value = transformedValue
+
+    let cursorPos = event.target.selectionStart;
+
+    event.target.setSelectionRange(cursorPos, cursorPos)
+}

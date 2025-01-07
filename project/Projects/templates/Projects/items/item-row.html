@@ -1,0 +1,13 @@
+{% load custom_filters %}
+
+<c-ui.table.tr id="itemRow-{{ item.pk }}" class="slide-up">
+    <c-ui.table.td>{{ item.description }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.costing.name }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.quantity }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.height }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.length }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.area }}</c-ui.table.td>
+    <c-ui.table.td>{{ item.employee.name }}</c-ui.table.td>
+    <c-ui.table.td class="text-right">{{ item.fabricationCost|add_commas }}</c-ui.table.td>
+    <c-ui.table.td class="text-right">{{ item.sprayingCost|add_commas }}</c-ui.table.td>
+</c-ui.table.tr>

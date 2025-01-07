@@ -142,3 +142,17 @@ dialog{
     }
 }
 
+.htmx-indicator{
+    overflow: hidden;
+    text-align: center;
+    color: var(--primary);
+    display: none;
+    transition: all 250ms ease-in-out;
+    
+    &.htmx-request {
+        height: auto;
+        padding: 1rem;
+        display: grid;
+        place-content: center;
+    }
+}

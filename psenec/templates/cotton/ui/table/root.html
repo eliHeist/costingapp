@@ -18,7 +18,7 @@
                 <thead class="sticky top-0 border-gray-300 border-b">
                     <template x-show="show_checks" x-cloak>
                         <c-ui.table.th>
-                            <c-ui.input type="checkbox" class="table-check"/>
+                            <c-ui.form_elements.input type="checkbox" class="table-check"/>
                         </c-ui.table.th>
                     </template>
                     {{ headers }}
@@ -28,5 +28,8 @@
                 </tbody>
             </table>
         </main>
+        {% if footer %}
+        <div class="p-6">{{ footer }}</div>
+        {% endif %}
     </div>
 </section>

@@ -16,96 +16,92 @@
     <c-ui.table.td class="text-right">{{ item.spraying_cost|add_commas }}</c-ui.table.td>
     <c-ui.table.td>
         <div class="flex justify-end">
-            <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey" onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
+            <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey"
+                onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
         </div>
     </c-ui.table.td>
 </c-ui.table.tr>
 <c-ui.dialog id="itemFormDlg-{{ item.pk }}" btn_size="icon_sm" btn_variant="ghost" size="xl">
-    <form hx-post="{% url 'LabourCostings:labor-table-edit' table.id %}" hx-target="#itemRow-{{ item.pk }}"
-        hx-swap="outerHTML" @submit="document.querySelector('#itemFormDlg-{{ item.pk }}').close()" x-data="{
-        costing_method: '{{ item.costing_method }}',
-        init(){},
-    }">
+    <form hx-put="{% url 'LabourCostings:labor-table-edit' table.id %}"
+        hx-select-oob="#itemCard-{{ item.pk }}, #itemRow-{{ item.pk }}" hx-indicator="#action_loader"
+        @submit="document.querySelector('#itemFormDlg-{{ item.pk }}').close()" x-data>
         {% csrf_token %}
         <div class="@container/item">
             <div class="grid gap-4">
-                <div class="grid gap-2 @sm/item:grid-cols-2 @xl/item:grid-cols-4">
+                <div class="grid gap-3 @sm/item:grid-cols-2 @xl/item:grid-cols-12">
                     <!-- item id -->
                     <input type="text" class="hidden" name="id" value="{{ item.pk }}">
                     <!-- name -->
-                    <c-ui.input name="name" label="Name" value="{{ item.name }}"
-                        class="@sm/item:col-span-2" />
+                    <c-ui.form_elements.input name="name" label="Name" required="true" value="{{ item.name }}"
+                        class="@sm/item:col-span-2 @xl/item:col-span-6" @input="inputUpper($event)" />
                     <!-- type -->
-                    <c-ui.select name="type" label="Type" class="@sm/item:col-span-2" action="true"
-                        action_icon="fas fa-plus"
+                    <c-ui.form_elements.select name="type" label="Type" required="true"
+                        class="@sm/item:col-span-2 @xl/item:col-span-6" action="true" action_icon="fas fa-plus"
                         action_vars="@click='document.getElementById(`type_dlg`).showModal()'">
                         <option value="">---select---</option>
                         {% for type in types %}
                         <option value="{{type.id}}" {% if type == item.type %}selected{% endif %}>{{ type.name }}</option>
                         {% endfor %}
-                    </c-ui.select>
+                    </c-ui.form_elements.select>
                     <!-- code -->
-                    <c-ui.input name="code" label="Code" value="{{ item.code }}" />
+                    <c-ui.form_elements.input name="code" label="Code" value="{{ item.code }}"
+                        class=" @xl/item:col-span-4" @input="inputUpper($event)" />
                     <!-- unit -->
-                    <c-ui.select name="unit_name" label="Unit name" vars="x-ref='unit_select'">
+                    <c-ui.form_elements.select name="unit_name" label="Unit name" class=" @xl/item:col-span-4"
+                        required="true" vars="x-ref='unit_select'">
                         {% for unit in table.get_all_units %}
-                        <option value="{{ unit.symbol }}" {% if unit.symbol == item.unit_name %}selected{% endif %}>{{ unit.name }}, ({{ unit.symbol }})</option>
+                        <option value="{{ unit.symbol }}" {% if unit.symbol == item.unit_name %}selected{% endif %}>{{
+                            unit.name }}, ({{ unit.symbol }})</option>
                         {% endfor %}
-                    </c-ui.select>
-                    <!-- fabrication cost -->
-                    <c-ui.input name="fabrication_cost" label="Fabrication" icon="fas fa-dollar-sign"
-                        value="{{ item.fabrication_cost|add_commas }}"
-                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'"
-                        class="@xl/item:col-span-2" />
-                    <!-- spraying cost -->
-                    <c-ui.input name="spraying_cost" label="Spraying" icon="fas fa-dollar-sign"
-                        value="{{ item.spraying_cost|add_commas }}"
-                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'"
-                        class="@xl/item:col-span-2" />
+                    </c-ui.form_elements.select>
+                    <!-- costing method -->
+                    <c-ui.form_elements.select name="costing_method" label="Pricing by" class="@xl/item:col-span-4"
+                        required="true">
+                        <option value="">---select---</option>
+                        <option value="PU" {% if item.costing_method == 'PU' %}selected{% endif %}>Units</option>
+                        <option value="BM" {% if item.costing_method == 'BM' %}selected{% endif %}>Measurements</option>
+                    </c-ui.form_elements.select>
                 </div>
-                <!-- costing method -->
-                <div class="flex gap-4">
-                    <fieldset>
-                        <label for="costing_method_PU">
-                            <input type="radio" name="costing_method" value="PU" id="costing_method_PU"
-                                :checked="costing_method == 'PU'" @change="costing_method = 'PU'">
-                            Per Unit</label>
-                    </fieldset>
-                    <fieldset>
-                        <label for="costing_method_BM">
-                            <input type="radio" name="costing_method" value="BM" id="costing_method_BM"
-                                :checked="costing_method == 'BM'" @change="costing_method = 'BM'">
-                            Measurements</label>
-                    </fieldset>
-                </div>
-                <!-- costing by measurements -->
-                <template x-if="costing_method=='BM'">
+                <!-- measurements -->
+                <div class="py-6">
+                    <p class="text-sm font-semibold text-gray-700">Measurements</p>
                     <div class="grid justify-items-center gap-y-4 md:flex md:gap-x-4 items-center">
                         <div class="flex items-center gap-x-2">
                             <!-- min height -->
-                            <c-ui.input name="min_height" placeholder="height" type="number"
-                                vars='step="0.01"' value="{{ item.min_height }}" />
+                            <c-ui.form_elements.input name="min_height" placeholder="height" type="number" vars='step="0.01"'
+                                value="{{ item.min_height }}" />
                             <span>
                                 <i class="fas fa-xmark"></i>
                             </span>
                             <!-- min length -->
-                            <c-ui.input name="min_length" placeholder="length" type="number"
-                                vars='step="0.01"' value="{{ item.min_length }}" />
+                            <c-ui.form_elements.input name="min_length" placeholder="length" type="number" vars='step="0.01"'
+                                value="{{ item.min_length }}" />
                         </div>
                         <span class="text-xs font-bold">TO</span>
                         <div class="flex items-center gap-x-2">
                             <!-- max height -->
-                            <c-ui.input name="max_height" placeholder="height" type="number"
-                                vars='step="0.01"' value="{{ item.max_height }}" />
+                            <c-ui.form_elements.input name="max_height" placeholder="height" type="number" vars='step="0.01"'
+                                value="{{ item.max_height }}" />
                             <span>
                                 <i class="fas fa-xmark"></i>
                             </span>
                             <!-- max length -->
-                            <c-ui.input name="max_length" placeholder="length" type="number"
-                                vars='step="0.01"' value="{{ item.max_length }}" />
+                            <c-ui.form_elements.input name="max_length" placeholder="length" type="number" vars='step="0.01"'
+                                value="{{ item.max_length }}" />
                         </div>
                     </div>
-                </template>
+                </div>
+                <!-- prices -->
+                <div class="grid gap-3 @sm/item:grid-cols-2">
+                    <!-- fabrication cost -->
+                    <c-ui.form_elements.input name="fabrication_cost" label="Fabrication" icon="fas fa-dollar-sign"
+                        value="{{ item.fabrication_cost|add_commas }}"
+                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'" class="" required="true" />
+                    <!-- spraying cost -->
+                    <c-ui.form_elements.input name="spraying_cost" label="Spraying" icon="fas fa-dollar-sign"
+                        value="{{ item.spraying_cost|add_commas }}"
+                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'" class="" required="true" />
+                </div>
             </div>
         </div>
         <div class="mt-6">
@@ -114,7 +110,7 @@
     </form>
 </c-ui.dialog>
 
-<div class="px-6 md:hidden last-of-type:pb-6">
+<div class="px-6 md:hidden last-of-type:pb-6" id="itemCard-{{ item.pk }}">
     <c-ui.card.root id="itemCard-{{ item.pk }}">
         <c-slot name="header">
             <div class="flex gap-x-6 justify-between">
@@ -148,7 +144,8 @@
         </div>
         <c-slot name="footer">
             <div class="flex justify-end">
-                <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey" onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
+                <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey"
+                    onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
             </div>
         </c-slot>
     </c-ui.card.root>

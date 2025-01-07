@@ -46,8 +46,14 @@
                 </div>
             </header>
 
+            <div id="action_loader" class="htmx-indicator sticky top-0 bg-primary rounded-xl w-full h-96 grid place-content-center">
+                <div class="">
+                    <i class="fas fa-circle-notch text-6xl animate-spin text-white"></i>
+                </div>
+            </div>
+
             <!-- Content Area -->
-            <div class="p-3 pb-0 sm:p-6 sm:pb-0 h-full">
+            <div class="p-3 pb-0 sm:p-6 sm:pb-0">
                 <!-- Add content here -->
                 <!-- <div class="h-96 border-dashed border-2 border-gray-300 flex items-center justify-center text-gray-400 hidden"></div> -->
                 {{ slot }}

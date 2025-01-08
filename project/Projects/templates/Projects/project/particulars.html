@@ -88,7 +88,7 @@
     <div id="groups" class="mt-6">
         {% for item_group in project.item_groups.all %}
         <div>
-            <c-ui.table.root title="{{ item_group.description }}">
+            <c-ui.table.root title="{{ item_group.description }}" body_id="itemGroup{{ item_group.description }}Items">
                 <c-slot name="vars">
                     <a href="#">
                         <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-primary" />
@@ -111,7 +111,10 @@
                     {% endfor %}
                 </c-slot>
                 <c-slot name="footer">
-                    <form id="project_form" method="post" x-data="{
+                    <form id="project_form" hx-target="#itemGroup{{ item_group.description }}Items"
+                    hx-post="{% url 'Projects:particulars' project.pk %}"
+                    hx-swap="beforeend" hx-indicator="#action_loader"
+                    x-data="{
                         show_form: false,
                     }">
                         <div id="token" class="hidden">
@@ -124,7 +127,7 @@
                                 <c-ui.button text="Add an item" icon="fas fa-plus" variant="ghost" vars="@click='show_form = !show_form'" size="md" />
                             </div>
                             <div x-collapse x-cloak x-show="show_form">
-                                <div class="grid gap-6 grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12">
+                                <div class="grid gap-6 grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12 px-[1px]">
                                     <c-ui.form_elements.input required="True" label="Description" name="description" type="text" class="col-span-2 @4xl:col-span-4" />
                                     <c-ui.form_elements.select label="Type" required="true" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
                                         {% for type in table.item_costings.all %}

@@ -117,6 +117,9 @@ class ProjectParticularsView(View):
             
             ItemGroup.objects.create(**group_data)
         
+        elif action == "add-item":
+            item_group = ItemGroup.objects.get(pk=data.get("group-id"))
+        
         return redirect(reverse("Projects:particulars", kwargs={"pk": pk}))
 
 

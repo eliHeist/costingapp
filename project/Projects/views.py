@@ -1,6 +1,6 @@
 from datetime import date
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -57,6 +57,28 @@ class ProjectDetailView(View):
             'customers': customers,
         }
         return render(request, "Projects/project/landing.html", context)
+    
+    def put(self, request, pk):
+        project = Project.objects.filter(pk=pk)
+        data = QueryDict(request.body.decode('utf-8'))
+        # print(data)
+        ctc = data.get("cost_to_customer").replace(',', '').strip()
+        customer = Customer.objects.get(pk=data.get("customer"))
+        
+        project_data = {
+            "title": data.get("title").strip(),
+            "description": data.get("description").strip(),
+            "customer": customer,
+            "cost_to_customer": int(ctc),
+        }
+        project.update(**project_data)
+        context = {
+            "project": project.first(),
+        }
+        if request.htmx:
+            print('htmx response')
+            return render(request, "Projects/project/project_detail_page.html", context)
+        return redirect(reverse("Projects:detail"))
 
 
 class ProjectParticularsView(View):

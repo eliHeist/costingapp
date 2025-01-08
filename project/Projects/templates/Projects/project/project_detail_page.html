@@ -1,113 +1,147 @@
-
+{% load custom_filters %}
 <c-layouts.base page_title="{{ project.title }}">
-    <div class="flex flex-wrap justify-between">
-        <h2 class="title-3 mb-8">{{ project.title }}</h2>
-        <form id="project_form" method="post" hx-post="{% url 'Projects:detail' project.pk %}" hx-target="html" hx-indicator="#spinner">
-            <div id="token">
-                {% csrf_token %}
-            </div>
-            <c-ui.drawer title="Edit Project Form" button_id="drawerTrigger" button_icon="fas fa-edit" trigger_text="Edit">
-                <div class="grid gap-6">
-                    <c-ui.form_elements.input required="True" label="Name" name="name" type="text" placeholder="Give the project a name" value="{{ project.title }}" />
-                    <c-ui.form_elements.textarea label="Description" name="description" placeholder="Describe the project." value="{{ project.description|safe }}" />
-                </div> 
-                <div class="grid gap-6 mt-12">
-                    <!-- customer select -->
-                    <div x-data="{
-                        customer: {
-                            name: '',
-                            email: '',
-                            contact: '',
-                            contact_2: ''
-                        },
-                        customer_form: false,
-                        async handleSave(){
-                            if (!this.customer.name.length > 1 || !this.customer.contact.length >= 4) {
-                                alert('Please give a valid name and a valid contact')
-                            }
-                            const response = await POST('{% url 'api:create_customer' %}', this.customer, true)
-                            if (response.ok) {
-                                const data = await response.json() 
-                                // add placeholder strings that will be replaced
-                                let template_string = this.$refs.option_template.innerHTML
-                                console.log(template_string)
-                                // replace the placeholders with the right info
-                                template_string = template_string.replace('rep_value', data.id)
-                                template_string = template_string.replace('rep_text', data.name)
-                                template_string = template_string.replace('rep_search_values', `${data.contact} ${data.contact_2} ${data.email}`)
-
-                                console.log(template_string)
-
-                                // get available options
-                                let all_options_div = document.querySelector('.customer_select .all_options')
-                                let new_inner_html = template_string + all_options_div.innerHTML
-                                // replace the innerhtml 
-                                all_options_div.innerHTML = new_inner_html
-                                // close the form
-                                this.customer_form = false
-                            } else {console.error(response.error)}
-                        },
-                        postListener(){
-                            const form = document.querySelector('#project_form')
-
-                            form.addEventListener('htmx:afterRequest', (event) => {
-                                console.log('prj POST completed')
-                                document.querySelector('#drawerTrigger').click()
-                                form.reset()
-                                window.location.reload()
-                            })
-                        },
-                        init(){
-                            this.postListener()
-                        }
-                    }">
-                        <div x-ref="option_template" class="hidden">
-                            <c-ui.form_elements.select2.option value='rep_value' search_values='rep_search_values' text='rep_text' selected="true" />
-                        </div>
-                        <c-ui.form_elements.select2.select required="True" label="Customer" name="customer" id="customer_select" action="True" action_icon="fas fa-plus text-green-600" click_commands="customer_form = true" class="customer_select">
-                            <c-slot name="options">
-                                {% for customer in customers %}
-                                    {% if project.customer == customer %}
-                                    <c-ui.form_elements.select2.option value="{{ customer.pk }}" text="{{ customer.name }}"
-                                    search_values="{{ customer.email }}{{ customer.contact }}{{ customer.contact_2 }}" selected="true" />
-                                    {% else %}
-                                    <c-ui.form_elements.select2.option value="{{ customer.pk }}" text="{{ customer.name }}"
-                                    search_values="{{ customer.email }}{{ customer.contact }}{{ customer.contact_2 }}" />
-                                    {% endif %}
-                                {% endfor %}
-                            </c-slot>
-                        </c-ui.form_elements.select2.select>
-                        <!-- customer create form -->
-                         <div class="rounded-lg p-4 mt-2 border border-gray-400 bg-gradient-to-b from-white to-gray-50" x-show="customer_form" x-cloak x-collapse>
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-semibold">Add a new customer</h3>
-                                <button type="button" @click="customer_form = false" class="text-gray-500 hover:text-red-500 text-xl">
-                                    &times;
-                                </button>
-                            </div>
-                            <div class="grid gap-3">
-                                <c-ui.form_elements.input label="Name" type="text" placeholder="Give the customer a name" vars='x-model="customer.name"' field_class="bg-white" />
-                                <c-ui.form_elements.input label="Email" type="email" placeholder="Enter the customer's email" vars='x-model="customer.email"' field_class="bg-white" />
-                                <c-ui.form_elements.input label="Contact" type="tel" placeholder="Enter the customer's contact number" vars='x-model="customer.contact"' field_class="bg-white" />
-                                <c-ui.form_elements.input label="Other Contact" type="tel" placeholder="Enter the customer's other contact number" vars='x-model="customer.contact_2"' field_class="bg-white" />
-                                <c-ui.button text="Save new customer" icon="fas fa-save" size="base" vars='@click="handleSave()"' />
-                            </div>
-                         </div>
-                    </div>
-                    <c-ui.form_elements.input label="CTC" name="cost_to_customer" type="number" placeholder="Project Cost to Customer" value="{{ project.cost_to_customer }}" />
+    <header class="flex justify-between @container mb-6">
+        <div class="grid" id="project_info">
+            <h2 class="title-3 mb-1">{{ project.title }}</h2>
+            <p class="mb-3">{{ project.description }}</p>
+            <div class="flex items-center gap-x-9 flex-wrap">
+                {% if project.is_active %}
+                <div class="rounded-md border border-green-500 text-green-600 bg-green-100 p-2 @2xl:py-1 flex items-center gap-x-2">
+                    <i class="far fa-circle-dot animate-ping rounded-full"></i>
+                    <span class="hidden @2xl:grid">Active</span>
                 </div>
-
-                <c-slot name="footer">
-                    <div class="hidden sticky top-0" id="spinner">
-                        <div class="animate-spin aspect-square w-32 h-32 grid place-content-center mx-auto">
-                            <i class="fas fa-spinner text-xl"></i>
+                {% else %}
+                <div class="rounded-md border border-gray-500 text-gray-600 bg-gray-100 p-2 @2xl:py-1 flex items-center gap-x-2">
+                    <i class="far fa-circle-dot"></i>
+                    <span class="hidden @2xl:grid">Inactive</span>
+                </div>
+                {% endif %}
+                <div class="flex gap-x-3">
+                    <p>Client:</p>
+                    <p class="font-semibold">{{ project.customer.name }}</p>
+                </div>
+                <div class="flex gap-x-3">
+                    <p>Contact:</p>
+                    <p class="font-semibold">
+                        {{ project.customer.contact|phone_number }} 
+                        {% if project.customer.contact2 %} / {{ project.customer.contact2|phone_number }}{% endif %}
+                    </p>
+                </div>
+                <div class="flex gap-x-3">
+                    <p>CTC:</p>
+                    <p class="font-semibold">{{ project.cost_to_customer|add_commas }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-start gap-x-3">
+            
+            <form id="project_form" hx-put="{% url 'Projects:detail' project.pk %}" hx-indicator="#action_loader" hx-select="#project_info" hx-target="#project_info">
+                <div id="token">
+                    {% csrf_token %}
+                </div>
+                <c-ui.drawer title="Edit Project Form" button_id="drawerTrigger" button_icon="fas fa-edit" trigger_text="Edit">
+                    <div class="grid gap-6">
+                        <c-ui.form_elements.input required="True" label="Title" name="title" type="text" placeholder="Give the project a name" value="{{ project.title }}" />
+                        <c-ui.form_elements.textarea label="Description" name="description" placeholder="Describe the project." value="{{ project.description|safe }}" />
+                    </div> 
+                    <div class="grid gap-6 mt-12">
+                        <!-- customer select -->
+                        <div x-data="{
+                            customer: {
+                                name: '',
+                                email: '',
+                                contact: '',
+                                contact_2: ''
+                            },
+                            customer_form: false,
+                            async handleSave(){
+                                if (!this.customer.name.length > 1 || !this.customer.contact.length >= 4) {
+                                    alert('Please give a valid name and a valid contact')
+                                }
+                                const response = await POST('{% url 'api:create_customer' %}', this.customer, true)
+                                if (response.ok) {
+                                    const data = await response.json() 
+                                    // add placeholder strings that will be replaced
+                                    let template_string = this.$refs.option_template.innerHTML
+                                    console.log(template_string)
+                                    // replace the placeholders with the right info
+                                    template_string = template_string.replace('rep_value', data.id)
+                                    template_string = template_string.replace('rep_text', data.name)
+                                    template_string = template_string.replace('rep_search_values', `${data.contact} ${data.contact_2} ${data.email}`)
+    
+                                    console.log(template_string)
+    
+                                    // get available options
+                                    let all_options_div = document.querySelector('.customer_select .all_options')
+                                    let new_inner_html = template_string + all_options_div.innerHTML
+                                    // replace the innerhtml 
+                                    all_options_div.innerHTML = new_inner_html
+                                    // close the form
+                                    this.customer_form = false
+                                } else {console.error(response.error)}
+                            },
+                            postListener(){
+                                const form = document.querySelector('#project_form')
+    
+                                form.addEventListener('htmx:afterRequest', (event) => {
+                                    console.log('prj POST completed')
+                                    document.querySelector('#drawerTrigger').click()
+                                    form.reset()
+                                    window.location.reload()
+                                })
+                            },
+                            init(){
+                                this.postListener()
+                            }
+                        }">
+                            <div x-ref="option_template" class="hidden">
+                                <c-ui.form_elements.select2.option value='rep_value' search_values='rep_search_values' text='rep_text' selected="true" />
+                            </div>
+                            <c-ui.form_elements.select2.select required="True" label="Customer" name="customer" id="customer_select" action="True" action_icon="fas fa-plus text-green-600" click_commands="customer_form = true" class="customer_select">
+                                <c-slot name="options">
+                                    {% for customer in customers %}
+                                        {% if project.customer == customer %}
+                                        <c-ui.form_elements.select2.option value="{{ customer.pk }}" text="{{ customer.name }}"
+                                        search_values="{{ customer.email }}{{ customer.contact }}{{ customer.contact_2 }}" selected="true" />
+                                        {% else %}
+                                        <c-ui.form_elements.select2.option value="{{ customer.pk }}" text="{{ customer.name }}"
+                                        search_values="{{ customer.email }}{{ customer.contact }}{{ customer.contact_2 }}" />
+                                        {% endif %}
+                                    {% endfor %}
+                                </c-slot>
+                            </c-ui.form_elements.select2.select>
+                            <!-- customer create form -->
+                             <div class="rounded-lg p-4 mt-2 border border-gray-400 bg-gradient-to-b from-white to-gray-50" x-show="customer_form" x-cloak x-collapse>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold">Add a new customer</h3>
+                                    <button type="button" @click="customer_form = false" class="text-gray-500 hover:text-red-500 text-xl">
+                                        &times;
+                                    </button>
+                                </div>
+                                <div class="grid gap-3">
+                                    <c-ui.form_elements.input label="Name" type="text" placeholder="Give the customer a name" vars='x-model="customer.name"' field_class="bg-white" />
+                                    <c-ui.form_elements.input label="Email" type="email" placeholder="Enter the customer's email" vars='x-model="customer.email"' field_class="bg-white" />
+                                    <c-ui.form_elements.input label="Contact" type="tel" placeholder="Enter the customer's contact number" vars='x-model="customer.contact"' field_class="bg-white" />
+                                    <c-ui.form_elements.input label="Other Contact" type="tel" placeholder="Enter the customer's other contact number" vars='x-model="customer.contact_2"' field_class="bg-white" />
+                                    <c-ui.button text="Save new customer" icon="fas fa-save" size="base" vars='@click="handleSave()"' />
+                                </div>
+                             </div>
                         </div>
+                        <c-ui.form_elements.input label="CTC" name="cost_to_customer" type="text" placeholder="Project Cost to Customer" value="{{ project.cost_to_customer|add_commas }}" x-mask:dynamic="$money($input)" />
                     </div>
-                    <c-ui.button text="Save" type="submit" icon="fas fa-save" size="base" variant="primary" />
-                </c-slot>
-            </c-ui.drawer>
-        </form>
-    </div>
+    
+                    <c-slot name="footer">
+                        <div class="hidden sticky top-0" id="spinner">
+                            <div class="animate-spin aspect-square w-32 h-32 grid place-content-center mx-auto">
+                                <i class="fas fa-spinner text-xl"></i>
+                            </div>
+                        </div>
+                        <c-ui.button text="Save" type="submit" icon="fas fa-save" size="base" variant="primary" />
+                    </c-slot>
+                </c-ui.drawer>
+            </form>
+        </div>
+    </header>
     <div class="tab-links mb-6" x-data>
         <div class="wrapper">
             <a href="{% url 'Projects:detail' project.pk %}">

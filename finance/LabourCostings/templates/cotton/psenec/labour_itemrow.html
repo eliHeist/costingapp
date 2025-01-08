@@ -96,11 +96,11 @@
                     <!-- fabrication cost -->
                     <c-ui.form_elements.input name="fabrication_cost" label="Fabrication" icon="fas fa-dollar-sign"
                         value="{{ item.fabrication_cost|add_commas }}"
-                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'" class="" required="true" />
+                        x-mask:dynamic='$money($input)' inputmode='numeric' class="" required="true" />
                     <!-- spraying cost -->
                     <c-ui.form_elements.input name="spraying_cost" label="Spraying" icon="fas fa-dollar-sign"
                         value="{{ item.spraying_cost|add_commas }}"
-                        vars="x-mask:dynamic='$money($input)' inputmode='numeric'" class="" required="true" />
+                        x-mask:dynamic='$money($input)' inputmode='numeric' class="" required="true" />
                 </div>
             </div>
         </div>

@@ -112,7 +112,7 @@
                 </c-slot>
                 <c-slot name="footer">
                     <form id="project_form" method="post" x-data="{
-                        show_form: true,
+                        show_form: false,
                     }">
                         <div id="token" class="hidden">
                             {% csrf_token %}
@@ -120,7 +120,7 @@
                             <input type="text" name="group-id" value="item_group.pk">
                         </div>
                         <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
-                            <div class="flex gap-x-6 gap-y-3 flex-wrap">
+                            <div class="flex gap-x-6 gap-y-3 flex-wrap justify-end">
                                 <c-ui.button text="Add an item" icon="fas fa-plus" variant="ghost" vars="@click='show_form = !show_form'" size="md" />
                             </div>
                             <div x-collapse x-cloak x-show="show_form">

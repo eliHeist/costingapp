@@ -2,12 +2,99 @@
 
 <c-ui.table.tr id="itemRow-{{ item.pk }}" class="slide-up">
     <c-ui.table.td>{{ item.description }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.costing.name }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.quantity }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.height }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.length }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.area }}</c-ui.table.td>
-    <c-ui.table.td>{{ item.employee.name }}</c-ui.table.td>
+    <c-ui.table.td class="hidden lg:table-cell">{{ item.costing.name }}</c-ui.table.td>
+    <c-ui.table.td class="text-center hidden md:table-cell">{{ item.quantity }}</c-ui.table.td>
+    <c-ui.table.td class="text-center">{{ item.height }}</c-ui.table.td>
+    <c-ui.table.td class="text-center">{{ item.length }}</c-ui.table.td>
+    <c-ui.table.td class="text-center hidden lg:table-cell">{{ item.area }}</c-ui.table.td>
+    <c-ui.table.td class="hidden md:table-cell">{{ item.employee.name }}</c-ui.table.td>
     <c-ui.table.td class="text-right">{{ item.fabricationCost|add_commas }}</c-ui.table.td>
     <c-ui.table.td class="text-right">{{ item.sprayingCost|add_commas }}</c-ui.table.td>
+    <c-ui.table.td>
+        <div class="flex justify-end">
+            <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey"
+                onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
+        </div>
+    </c-ui.table.td>
 </c-ui.table.tr>
+
+<c-ui.dialog id="itemFormDlg-{{ item.pk }}" btn_size="icon_sm" btn_variant="ghost" size="xl">
+    <form hx-put="{% url 'LabourCostings:labor-table-edit' table.id %}"
+        hx-select-oob="#itemCard-{{ item.pk }}, #itemRow-{{ item.pk }}" hx-indicator="#action_loader"
+        @submit="document.querySelector('#itemFormDlg-{{ item.pk }}').close()" x-data>
+        {% csrf_token %}
+        <div class="grid gap-6 grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12 px-[1px]">
+            <c-ui.form_elements.input required="True" label="Description" name="description" value="{{ item.description }}" type="text" class="col-span-2 @4xl:col-span-4" />
+            <c-ui.form_elements.select2.select required="True" label="Type" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
+                <c-slot name="options">
+                    {% for type in table.item_costings.all %}
+                        {% if type == item.type %}
+                        <c-ui.form_elements.select2.option value="{{ type.pk }}" text="{{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})"
+                        search_values="{{ type.email }}" selected="True" />
+                        {% else %}
+                        <c-ui.form_elements.select2.option value="{{ type.pk }}" text="{{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})"
+                        search_values="{{ type.email }}" />
+                        {% endif %}
+                    {% endfor %}
+                </c-slot>
+            </c-ui.form_elements.select2.select>
+            <c-ui.form_elements.input required="True" label="Quantity" name="quantity" value="{{ item.quantity }}" type="number" class="col-span-1 @4xl:col-span-4" />
+            <c-ui.form_elements.input label="Height" name="height" value="{{ item.height }}" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
+            <c-ui.form_elements.input label="Length" name="length" value="{{ item.length }}" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
+            <c-ui.form_elements.select label="Employee" required="true" name="employee" class="col-span-2 @4xl:col-span-4">
+                {% for employee in employees %}
+                    {% if employee == item.employee %}
+                    <option value="{{ employee.id }}" selected>{{ employee.name }}</option>
+                    {% else %}
+                    <option value="{{ employee.id }}">{{ employee.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </c-ui.form_elements.select>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <c-ui.button type="submit" icon="fas fa-save" text="Save" />
+        </div>
+        <div class="mt-6">
+            <c-ui.button icon="fas fa-save" text="Save" type="submit" />
+        </div>
+    </form>
+</c-ui.dialog>
+
+<div class="px-6 md:hidden last-of-type:pb-6" id="itemCard-{{ item.pk }}">
+    <c-ui.card.root id="itemCard-{{ item.pk }}-inner">
+        <c-slot name="header">
+            <div class="flex gap-x-6 justify-between">
+                <div>
+                    <h3 class="title-2">{{ item.description }}</h3>
+                    <p class="text-muted text-xl">{{ item.costing.code }}</p>
+                </div>
+                <c-ui.badge text="{{ item.costing.name }}" />
+            </div>
+        </c-slot>
+        <div class="grid">
+            <div class="flex justify-between">
+                <p class="text-muted">Size</p>
+                <p class="font-semibold">
+                    {% if item.costing.costing_method == 'PU' %}{{ item.costing.get_unit_name_display }} ({{ item.costing.unit_name }})
+                    {% else %}
+                    <span>({{ item.height }} x {{ item.length }})</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="flex justify-between">
+                <p class="text-muted">Fabrication</p>
+                <p class="font-semibold">{{ item.fabricationCost|add_commas }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p class="text-muted">Spraying</p>
+                <p class="font-semibold">{{ item.sprayingCost|add_commas }}</p>
+            </div>
+        </div>
+        <c-slot name="footer">
+            <div class="flex justify-end">
+                <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-grey"
+                    onclick="document.querySelector('#itemFormDlg-{{ item.pk }}').showModal()" />
+            </div>
+        </c-slot>
+    </c-ui.card.root>
+</div>

@@ -8,7 +8,7 @@ from django.views import View
 from finance.LabourCostings.models import ItemCosting, ItemType, LabourTable
 from people.Customers.models import Customer
 from people.Employees.models import Employee
-from project.Items.models import ItemGroup
+from project.Items.models import Item, ItemGroup
 from project.Projects.models import Project
 from project.Projects.forms import ProjectModelForm
 
@@ -119,6 +119,22 @@ class ProjectParticularsView(View):
         
         elif action == "add-item":
             item_group = ItemGroup.objects.get(pk=data.get("group-id"))
+            costing = ItemCosting.objects.get(pk=data.get("costing"))
+            employee = Employee.objects.get(pk=data.get("employee"))
+            item_data = {
+                "item_group": item_group,
+                "description": data.get("description"),
+                "quantity": int(data.get("quantity")),
+                "height": float(data.get("height")),
+                "length": float(data.get("length")),
+                "employee": employee,
+                "costing": costing
+            }
+            item = Item.objects.create(**item_data)
+            context = {
+                "item": item
+            }
+            return render(request, "Projects/items/item-row.html", context)
         
         return redirect(reverse("Projects:particulars", kwargs={"pk": pk}))
 

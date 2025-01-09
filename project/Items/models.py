@@ -13,17 +13,17 @@ class ItemGroup(models.Model):
 class Item(models.Model):
     item_group = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, related_name='items')
     description = models.CharField(max_length=255)
-    quantity = models.FloatField()
+    quantity = models.SmallIntegerField()
     height = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     costing = models.ForeignKey(ItemCosting, on_delete=models.CASCADE)
     
     def area(self):
-        return self.height * self.length if self.costing.costing_method == 'BM' else 1
+        return round(self.height * self.length, 2) if self.costing.costing_method == 'BM' else 1
     
     def fabricationCost(self):
-        return self.area() * self.costing.fabrication_cost * self.quantity
+        return round(int(self.area() * float(self.costing.fabrication_cost) * self.quantity), -2)
     
     def sprayingCost(self):
-        return self.area() * self.costing.spraying_cost * self.quantity
+        return round(int(self.area() * float(self.costing.spraying_cost) * self.quantity), -2)

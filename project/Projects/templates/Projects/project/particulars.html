@@ -88,7 +88,7 @@
     <div id="groups" class="mt-6">
         {% for item_group in project.item_groups.all %}
         <div>
-            <c-ui.table.root title="{{ item_group.description }}" body_id="itemGroup{{ item_group.description }}Items">
+            <c-ui.table.root title="{{ item_group.description }}" body_id="itemGroup{{ item_group.description }}Items" table_class="hidden md:table">
                 <c-slot name="vars">
                     <a href="#">
                         <c-ui.button icon="fas fa-edit" size="icon_sm" variant="outline-primary" />
@@ -96,14 +96,15 @@
                 </c-slot>
                 <c-slot name="headers">
                     <c-ui.table.th>Description</c-ui.table.th>
-                    <c-ui.table.th>Type</c-ui.table.th>
-                    <c-ui.table.th class="text-center">Quantity</c-ui.table.th>
+                    <c-ui.table.th class="hidden lg:table-cell">Type</c-ui.table.th>
+                    <c-ui.table.th class="text-center hidden md:table-cell">Quantity</c-ui.table.th>
                     <c-ui.table.th class="text-center">Height</c-ui.table.th>
                     <c-ui.table.th class="text-center">Length</c-ui.table.th>
-                    <c-ui.table.th class="text-center">Area</c-ui.table.th>
-                    <c-ui.table.th>Employee</c-ui.table.th>
+                    <c-ui.table.th class="text-center hidden lg:table-cell">Area</c-ui.table.th>
+                    <c-ui.table.th class="hidden md:table-cell">Employee</c-ui.table.th>
                     <c-ui.table.th class="text-right">Fabrication</c-ui.table.th>
                     <c-ui.table.th class="text-right">Spraying</c-ui.table.th>
+                    <c-ui.table.th class="text-right"></c-ui.table.th>
                 </c-slot>
                 <c-slot name="data">
                     {% for item in item_group.items.all %}
@@ -120,7 +121,7 @@
                         <div id="token" class="hidden">
                             {% csrf_token %}
                             <input type="text" name="action" value="add-item">
-                            <input type="text" name="group-id" value="item_group.pk">
+                            <input type="text" name="group-id" value="{{ item_group.pk }}">
                         </div>
                         <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
                             <div class="flex gap-x-6 gap-y-3 flex-wrap justify-end">
@@ -129,11 +130,14 @@
                             <div x-collapse x-cloak x-show="show_form">
                                 <div class="grid gap-6 grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12 px-[1px]">
                                     <c-ui.form_elements.input required="True" label="Description" name="description" type="text" class="col-span-2 @4xl:col-span-4" />
-                                    <c-ui.form_elements.select label="Type" required="true" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
-                                        {% for type in table.item_costings.all %}
-                                        <option value="{{ type.id }}">{{ type.name }}</option>
-                                        {% endfor %}
-                                    </c-ui.form_elements.select>
+                                    <c-ui.form_elements.select2.select required="True" label="Type" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
+                                        <c-slot name="options">
+                                            {% for type in table.item_costings.all %}
+                                                <c-ui.form_elements.select2.option value="{{ type.pk }}" text="{{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})"
+                                                search_values="{{ type.email }}" />
+                                            {% endfor %}
+                                        </c-slot>
+                                    </c-ui.form_elements.select2.select>
                                     <c-ui.form_elements.input required="True" label="Quantity" name="quantity" type="number" class="col-span-1 @4xl:col-span-4" />
                                     <c-ui.form_elements.input label="Height" name="height" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
                                     <c-ui.form_elements.input label="Length" name="length" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />

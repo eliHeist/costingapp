@@ -45,9 +45,8 @@ class LaborFeesEditView(View):
 
         data = request.POST
         table = get_object_or_404(LabourTable, id=pk)
-        # data looks like this <QueryDict: {'csrfmiddlewaretoken': ['udD5RpwbJJ3GGyTk1rg5GfdsxHIZQfeDuLCShFxaphnAfsxcP7qltBX3ruexwIMI'], 'id': [''], 'table_id': ['1'], 'name': ['SMALL WINDOW'], 'type': ['2'], 'code': ['B'], 'unit_name': ['m'], 'fabrication_cost': ['13,000'], 'spraying_cost': ['6,000'], 'costing_method': ['BM'], 'min_height': ['0.9'], 'min_length': ['0.9'], 'max_height': ['1.2'], 'max_length': ['1.2']}>
 
-        print(data)
+        # print(data)
 
         # if there is no id create a new item costing otherwise update the exixting one
         if data.get("id") == "":
@@ -88,7 +87,9 @@ class LaborFeesEditView(View):
                 "table": table,
                 "types": types,
             }
-            return render(request, template_name, context)
+            response = render(request, template_name, context)
+            response['HX-Refresh'] = True
+            return response
             
         return redirect(reverse("LabourCostings:labor-table-edit", kwargs={"pk": pk}))
     

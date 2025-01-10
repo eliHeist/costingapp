@@ -127,21 +127,20 @@
                             <div class="flex gap-x-6 gap-y-3 flex-wrap justify-end">
                                 <c-ui.button text="Add an item" icon="fas fa-plus" variant="ghost" vars="@click='show_form = !show_form'" size="md" />
                             </div>
-                            <div x-collapse x-cloak x-show="show_form">
-                                <div class="grid gap-6 grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12 px-[1px]">
-                                    <c-ui.form_elements.input required="True" label="Description" name="description" type="text" class="col-span-2 @4xl:col-span-4" />
-                                    <c-ui.form_elements.select2.select required="True" label="Type" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
-                                        <c-slot name="options">
-                                            {% for type in table.item_costings.all %}
-                                                <c-ui.form_elements.select2.option value="{{ type.pk }}" text="{{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})"
-                                                search_values="{{ type.email }}" />
-                                            {% endfor %}
-                                        </c-slot>
-                                    </c-ui.form_elements.select2.select>
-                                    <c-ui.form_elements.input required="True" label="Quantity" name="quantity" type="number" class="col-span-1 @4xl:col-span-4" />
-                                    <c-ui.form_elements.input label="Height" name="height" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
-                                    <c-ui.form_elements.input label="Length" name="length" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
-                                    <c-ui.form_elements.select label="Employee" required="true" name="employee" class="col-span-2 @4xl:col-span-4">
+                            <div x-collapse x-cloak x-show="show_form" class="w-full">
+                                <div class="grid gap-6 @lg:grid-cols-2 @2xl:grid-cols-4 @4xl:grid-cols-12 px-[1px] w-full">
+                                    <c-ui.form_elements.input required="True" label="Description" name="description" type="text" class="@lg:col-span-2 @4xl:col-span-4 w-full" />
+                                    <c-ui.form_elements.select label="Type" required="true" name="costing" class="@lg:col-span-1 @2xl:col-span-2 @4xl:col-span-4 w-full">
+                                        {% for type in table.item_costings.all %}
+                                        <option value="{{ type.pk }}">
+                                            {{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})
+                                        </option>
+                                        {% endfor %}
+                                    </c-ui.form_elements.select>
+                                    <c-ui.form_elements.input required="True" label="Quantity" name="quantity" type="number" class="@lg:col-span-1 @4xl:col-span-4 w-full" />
+                                    <c-ui.form_elements.input label="Height" name="height" type="number" step="0.01" class="@lg:col-span-1 @4xl:col-span-4 w-full" />
+                                    <c-ui.form_elements.input label="Length" name="length" type="number" step="0.01" class="@lg:col-span-1 @4xl:col-span-4 w-full" />
+                                    <c-ui.form_elements.select label="Employee" required="true" name="employee" class="@lg:col-span-2 @4xl:col-span-4 w-full">
                                         {% for employee in employees %}
                                         <option value="{{ employee.id }}">{{ employee.name }}</option>
                                         {% endfor %}

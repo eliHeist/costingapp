@@ -4,6 +4,7 @@ from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from django_htmx.http import HttpResponseClientRefresh
 
 from finance.LabourCostings.models import ItemCosting, ItemType, LabourTable
 from people.Customers.models import Customer
@@ -48,6 +49,40 @@ class ProjectsView(View):
             return HttpResponse("")
 
 
+class ProjectsFormView(View):
+    def get(self, request, pk=None):
+        project = None
+        if pk:
+            project = Project.objects.get(pk=pk)
+        
+        form = ProjectModelForm(instance=project)
+        
+        context = {
+            'form': form,
+            'project': project
+        }
+        
+        return render(request, "Projects/project_form.html", context)
+    
+    def post(self, request, pk=None):
+        project = None
+        if pk:
+            project = Project.objects.get(pk=pk)
+            
+        form = ProjectModelForm(request.POST, instance=project)
+        
+        if form.is_valid():
+            project = form.save()
+            messages.success(request, "Project saved successfully.")
+            return redirect('Projects:detail', kwargs={"pk":project})
+        else:
+            context = {
+                'form': form,
+                'project': project
+            }
+            return render(request, "Projects/project_form.html", context)
+        
+        
 class ProjectDetailView(View):
     def get(self, request, pk):
         project = Project.objects.get(pk=pk)
@@ -134,41 +169,17 @@ class ProjectParticularsView(View):
             context = {
                 "item": item
             }
-            return render(request, "Projects/items/item-row.html", context)
+            # request = render(request, "Projects/items/item-row.html", context)
+            return HttpResponseClientRefresh()
         
         return redirect(reverse("Projects:particulars", kwargs={"pk": pk}))
 
 
-class ProjectsFormView(View):
-    def get(self, request, pk=None):
-        project = None
-        if pk:
-            project = Project.objects.get(pk=pk)
-        
-        form = ProjectModelForm(instance=project)
-        
+class ProjectExpensesView(View):
+    def get(self, request, pk):
+        project = Project.objects.get(pk=pk)
+
         context = {
-            'form': form,
-            'project': project
+            "project": project
         }
-        
-        return render(request, "Projects/project_form.html", context)
-    
-    def post(self, request, pk=None):
-        project = None
-        if pk:
-            project = Project.objects.get(pk=pk)
-            
-        form = ProjectModelForm(request.POST, instance=project)
-        
-        if form.is_valid():
-            project = form.save()
-            messages.success(request, "Project saved successfully.")
-            return redirect('Projects:detail', kwargs={"pk":project})
-        else:
-            context = {
-                'form': form,
-                'project': project
-            }
-            return render(request, "Projects/project_form.html", context)
-        
+        return render(request, "Projects/project/expenses.html", context)

@@ -1,10 +1,10 @@
 
 <div class="rounded-xl bg-lighter overflow-hidden {{ class }}" {{ attrs }}>
     {% if header %}
-    <header class="p-6 grid border-b border-light">{{ header }}</header>
+    <header class="p-6 pb-3 grid border-b border-light">{{ header }}</header>
     {% endif %}
-    <div class="p-6">{{ slot }}</div>
+    <div class="px-6 py-3">{{ slot }}</div>
     {% if footer %}
-    <div class="p-6 grid border-b border-light">{{ footer }}</div>
+    <div class="p-6 pt-3 grid border-b border-light">{{ footer }}</div>
     {% endif %}
 </div>

@@ -1,17 +1,17 @@
 {% load custom_filters %}
 <c-layouts.base page_title="{{ project.title }}">
-    <header class="flex justify-between @container mb-6">
+    <header class="grid sm:flex gap-6 justify-between @container mb-6">
         <div class="grid" id="project_info">
             <h2 class="title-3 mb-1">{{ project.title }}</h2>
             <p class="mb-3">{{ project.description }}</p>
-            <div class="flex items-center gap-x-9 flex-wrap">
+            <div class="grid justify-start sm:flex items-center gap-x-9 flex-wrap">
                 {% if project.is_active %}
-                <div class="rounded-md border border-green-500 text-green-600 bg-green-100 p-2 @2xl:py-1 flex items-center gap-x-2">
+                <div class="text-green-500 p-2 @2xl:py-1 flex items-center gap-x-2">
                     <i class="far fa-circle-dot animate-ping rounded-full"></i>
                     <span class="hidden @2xl:grid">Active</span>
                 </div>
                 {% else %}
-                <div class="rounded-md border border-gray-500 text-gray-600 bg-gray-100 p-2 @2xl:py-1 flex items-center gap-x-2">
+                <div class="p-2 @2xl:py-1 flex items-center gap-x-2">
                     <i class="far fa-circle-dot"></i>
                     <span class="hidden @2xl:grid">Inactive</span>
                 </div>
@@ -156,7 +156,7 @@
             </a>
         </div>
     </div>
-    <div class="grid gap-y-6 bg-light rounded-xl p-6">
+    <div class="grid gap-y-3 md:gap-y-6 md:bg-light rounded-xl md:p-6">
         {% block slot %}{% endblock %}
     </div>
 </c-layouts.base>

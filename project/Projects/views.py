@@ -177,7 +177,7 @@ class ProjectParticularsView(View):
 
 class ProjectExpensesView(View):
     def get(self, request, pk):
-        project = Project.objects.get(pk=pk)
+        project = Project.objects.prefetch_related('expenses').get(pk=pk)
 
         context = {
             "project": project

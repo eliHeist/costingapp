@@ -1,0 +1,28 @@
+{% extends 'Projects/project/project_detail_page.html' %}
+{% load static custom_filters %}
+
+{% block slot %}
+<div>
+    <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
+        <div class="flex gap-x-6 gap-y-3 justify-end">
+            <form action="" method="post">
+                <c-ui.drawer title="New expense form">
+                    <c-slot name="trigger_button">
+                        <c-ui.button id="{{ button_id }}" text="Add an expense" icon="fas fa-plus" variant="ghost" size="md" @click="open = true" />
+                    </c-slot>
+
+                    {% csrf_token %}
+                    
+                    <c-slot name="footer">
+                        <c-ui.button text="Save" icon="fas fa-save" variant="primary" size="md" type="submit" />
+                    </c-slot>
+                </c-ui.drawer>
+            </form>
+        </div>
+        <div class="p-6">
+            <c-ui.form_elements.multiselect.root data_name="expense_categories" label="Categories">
+            </c-ui.form_elements.multiselect.root>
+        </div>
+    </div>
+</div>
+{% endblock %}

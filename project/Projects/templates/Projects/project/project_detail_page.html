@@ -154,6 +154,11 @@
                     <p>Particulars</p>
                 </div>
             </a>
+            <a href="{% url 'Projects:expenses' project.pk %}">
+                <div class="tab" :class="'{{ request.path }}'.includes('{% url 'Projects:expenses' project.pk %}') ? 'active' : ''">
+                    <p>Expenses</p>
+                </div>
+            </a>
         </div>
     </div>
     <div class="grid gap-y-3 md:gap-y-6 md:bg-light rounded-xl md:p-6">

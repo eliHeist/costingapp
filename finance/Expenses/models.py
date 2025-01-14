@@ -6,7 +6,7 @@ class ExpenseCategory(models.Model):
     name = models.CharField(max_length=100)
 
 class Expense(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="expenses")
+    categories = models.ManyToManyField(ExpenseCategory, related_name="expenses")
     description = models.CharField(max_length=255)
     amount = models.IntegerField()

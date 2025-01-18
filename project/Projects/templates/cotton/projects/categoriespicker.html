@@ -1,16 +1,5 @@
 <div x-data="{
-    allTags: [
-        { name: 'javascript', value: '1' },
-        { name: 'python', value: '2' },
-        { name: 'react', value: '3' },
-        { name: 'node.js', value: '4' },
-        { name: 'typescript', value: '5' },
-        { name: 'css', value: '6' },
-        { name: 'html', value: '7' },
-        { name: 'angular', value: '8' },
-        { name: 'vue.js', value: '9' },
-        { name: 'jquery', value: '10' }
-    ],
+    allTags: [],
     selectedTags: [],
     searchQuery: '',
     isLoading: false,
@@ -32,6 +21,21 @@
         
         return matches;
     },
+
+    async fetchTags(){
+        this.isLoading = true
+        let response = await GET('{% url 'api:get_all_expense_categories' %}', true)
+        if (response.ok) {
+            let data = await response.json()
+            data.forEach(category => {
+                this.allTags.push({
+                    'name': category.name,
+                    'value': category.id
+                })
+            })
+        }
+        this.isLoading = false
+    },
     
     isSelected(value) {
         return this.selectedTags.some(tag => tag.value === value);
@@ -41,28 +45,24 @@
         const newTagName = this.searchQuery.trim();
         if (!newTagName) return;
         
+        let confirmed = confirm(`Add ${newTagName} as a new category.`)
+        if (!confirmed) return;
+
         this.isLoading = true;
-        const newTag = { name: newTagName, value: this.nextId.toString() };
+        const newTag = { name: newTagName };
         
         try {
             // Example POST request to save the new tag
-            const response = await fetch('/api/tags', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newTagName,
-                    value: newTag.value
-                })
-            });
+            const response = await POST('{% url 'api:create_expense_category' %}', newTag)
             
-            if (!response.ok) throw new Error('Failed to save tag');
-            
+            // create tag
+            let new_tag = {
+                'name': response.name,
+                'value': response.id
+            }
             // Add to local arrays and increment ID
-            this.allTags.push(newTag);
-            this.nextId++;
-            this.addTag(newTag);
+            await this.allTags.push(new_tag);
+            this.addTag(new_tag);
             
         } catch (error) {
             console.error('Error saving tag:', error);
@@ -90,29 +90,7 @@
         }, 300);
     },
     
-    async saveSelectedTags() {
-        this.isLoading = true;
-        try {
-            const response = await fetch('/api/selected-tags', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    tags: this.selectedTags
-                })
-            });
-            
-            if (!response.ok) throw new Error('Failed to save selected tags');
-            alert('Tags saved successfully!');
-            
-        } catch (error) {
-            console.error('Error saving selected tags:', error);
-            alert('Failed to save selected tags. Please try again.');
-        } finally {
-            this.isLoading = false;
-        }
-    },
+    async saveSelectedTags() {},
     
     removeTag(tag) {
         const index = this.selectedTags.findIndex(t => t.value === tag.value);
@@ -131,27 +109,30 @@
                 }, 50);
             }, 300);
         }
+    },
+    async init(){
+        this.fetchTags()
     }
-}" class="max-w-2xl mx-auto">
+}" class="max-w-2xl">
     <!-- Selected Tags Section -->
     <div class="mb-6">
-        <h2 class="text-lg font-semibold mb-3 text-gray-700">Selected Tags</h2>
-        <div class="flex flex-wrap gap-2 min-h-12 p-2 bg-white rounded-lg shadow-sm border border-gray-200">
+        <h2 class="text-sm font-semibold mb-3 text-gray-800">Add at least 1 category</h2>
+        <div class="flex flex-wrap gap-2 p-3 bg-light rounded-t-lg shadow-sm">
             <template x-for="tag in selectedTags" :key="tag.value">
                 <div :id="'selected-'+tag.value"
-                     class="bg-[#E1ECF4] text-[#39739D] px-3 py-1.5 rounded-md flex items-center gap-2 opacity-0 scale-95 transform transition-all duration-300 border border-[#39739D]/20 hover:bg-[#D0E3F1] cursor-pointer shadow-sm group"
+                     class="selected_tag bg-white px-3 py-1.5 rounded-md flex items-center gap-2 opacity-0 scale-95 transform transition-all duration-300 border border-[#39739D]/20 hover:translate-y-2 cursor-pointer shadow-sm group"
                      @click="removeTag(tag)">
                     <span x-text="tag.name" class="text-sm font-medium"></span>
-                    <span class="text-gray-400 group-hover:text-[#39739D] transition-colors duration-200">&times;</span>
+                    <span class="text-gray-400 group-hover:text-red-600 transition-colors duration-300">&times;</span>
                     <input type="text" class="hidden" name="categories" :value="tag.value">
                 </div>
             </template>
             <input 
                 type="text" 
                 x-model="searchQuery"
-                placeholder="tags"
+                placeholder="Tag name"
                 @keydown.enter="showCreateOption && createAndAddTag()"
-                class="w-fit py-2 border-b-2 bg-transparent border-transparent rounded-lg focus:ring-0 focus:border-primary outline-none transition-all duration-200"
+                class="w-fit max-w-full py-1.5 border-b-2 bg-transparent border-transparent ring-0 outline-0 focus-within:ring-0 focus-within:border-primary transition-all"
                 :disabled="isLoading"
             />
         </div>
@@ -169,7 +150,7 @@
         <div class="flex flex-wrap gap-2 p-3 bg-white rounded-lg shadow-sm border border-gray-200">
             <!-- Create New Tag Option -->
             <div x-show="showCreateOption"
-                 @click="createAndAddTag"
+                 @click="createAndAddTag()"
                  class="bg-green-100 text-green-700 px-3 py-1.5 rounded-md cursor-pointer transition-all duration-300 border border-green-300 hover:bg-green-200 shadow-sm transform flex items-center gap-2">
                 <span class="text-sm font-medium">Create "</span>
                 <span x-text="searchQuery" class="text-sm font-medium"></span>
@@ -191,16 +172,5 @@
                 No matching tags found
             </div>
         </div>
-    </div>
-    
-    <!-- Save Button -->
-    <div class="mt-6">
-        <button 
-            @click="saveSelectedTags"
-            :disabled="selectedTags.length === 0 || isLoading"
-            class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2">
-            <span x-show="isLoading" class="animate-spin rounded-full h-4 w-4 border-2 border-white"></span>
-            <span>Save Selected Tags</span>
-        </button>
     </div>
 </div>

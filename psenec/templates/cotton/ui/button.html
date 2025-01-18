@@ -14,6 +14,9 @@
     {% elif size == 'icon' %}h-10 w-10 grid place-content-center
     {% elif size == 'icon_sm' %}h-8 w-8 text-sm grid place-content-center
     {% else %}h-10 grid place-content-center px-3{% endif %}
+
+    disabled:bg-gray-600 disabled:text-gray-300 disabled:hover:bg-gray-600 disabled:hover:text-gray-300
+    disabled:cursor-not-allowed
     {{ class }}"
     {{ vars|safe }} id="{{ id }}" {{ attrs }}>
     {% if text or icon %}

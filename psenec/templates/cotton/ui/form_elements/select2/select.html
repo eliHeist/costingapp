@@ -74,11 +74,11 @@
     {% if label %}
     <label for="name" class="block text-sm font-medium text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
     {% endif %}
-    <div class="flex items-center border border-gray-300 focus-within:border-gray-500 rounded-md relative">
+    <div class="flex items-center border-b-2 border-gray-300 transition-all hover:border-gray-400 focus-within:border-primary focus-within:hover:border-primary relative">
         {% if icon %}
         <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
         {% else %}
-        <div class="p-1"></div>
+        <div class="p-0"></div>
         {% endif %}
         <!-- search field -->
         <input type="text" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" placeholder="Search here" 

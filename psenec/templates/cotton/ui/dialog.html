@@ -3,7 +3,7 @@
     <c-ui.button size="{{ btn_size }}" variant="{{ btn_variant }}" text="{% if label %}{{ label }}{% endif %}" icon="{{ icon }}" type="button" vars="@click='$refs.dlg.showModal()'" />
     {% endif %}
     <dialog id="{{ id }}" x-ref="dlg" 
-        class="w-full 
+        class="
             {% if size == 'sm' %} sm:w-[20rem] 
             {% elif size == 'md' %} sm:w-[30rem] 
             {% elif size == 'base' %} sm:w-[40rem] 

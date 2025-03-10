@@ -82,6 +82,46 @@ class ProjectsFormView(View):
             }
             return render(request, "Projects/project_form.html", context)
         
+
+
+class ProjectsCreateView(View):
+    def get(self, request, pk=None):
+        project = None
+        if pk:
+            project = Project.objects.get(pk=pk)
+        
+        customers = Customer.objects.all()
+        
+        form = ProjectModelForm(instance=project)
+        
+        context = {
+            'form': form,
+            'project': project,
+            'customers': customers
+        }
+        
+        return render(request, "Projects/project_create.html", context)
+    
+    def post(self, request, pk=None):
+        project = None
+        if pk:
+            instance = Project.objects.get(pk=pk)
+            
+            form = ProjectModelForm(request.POST, instance=instance)
+        else:
+            form = ProjectModelForm(request.POST)
+        
+        if form.is_valid():
+            project = form.save()
+            messages.success(request, "Project saved successfully.")
+            return redirect(reverse('Projects:detail', kwargs={"pk":project.pk}))
+        else:
+            context = {
+                'form': form,
+                'project': project
+            }
+            return render(request, "Projects/project_form.html", context)
+        
         
 class ProjectDetailView(View):
     def get(self, request, pk):
@@ -125,7 +165,7 @@ class ProjectParticularsView(View):
         customers = Customer.objects.all()
         employees = Employee.objects.all()
         types = ItemType.objects.all()
-        
+         
         context = {
             'project': project,
             'customers': customers,

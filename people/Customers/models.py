@@ -6,3 +6,6 @@ class Customer(models.Model):
     email = models.EmailField(null=True, blank=True)
     contact = models.CharField(max_length=100, null=True, blank=True)
     contact_2 = models.CharField(max_length=100, null=True, blank=True)
+    
+    def __str__(self):
+        return self.name

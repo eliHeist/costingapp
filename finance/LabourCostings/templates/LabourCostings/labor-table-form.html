@@ -79,8 +79,7 @@
                         </c-ui.table.root>
                     </div>
                     <div class="flex justify-end mt-4">
-                        <c-ui.button text="Add Item" icon="fas fa-plus" variant="outline-primary"
-                            vars="@click='handleAddItem()'" />
+                        <c-ui.button text="Add Item" icon="fas fa-plus" variant="outline-primary" vars="@click='handleAddItem()'" />
                     </div>
                     <c-ui.dialog id="itemFormDlg" size="xl">
                         <form hx-post="{% url 'LabourCostings:labor-table-edit' table.id %}" hx-target="#itemTableBody"
@@ -113,7 +112,7 @@
                                         <c-ui.form_elements.select name="unit_name" label="Unit name"
                                             class=" @xl/item:col-span-4" required="true" vars="x-ref='unit_select'">
                                             {% for unit in table.get_all_units %}
-                                            <option value="{{ unit.symbol }}">{{ unit.name }}, ({{ unit.symbol }})
+                                            <option value="{{ unit.symbol }}" {% if unit.symbol == 'm' %}selected{% endif %}>{{ unit.name }}, ({{ unit.symbol }})
                                             </option>
                                             {% endfor %}
                                         </c-ui.form_elements.select>

@@ -1,8 +1,10 @@
 
-<form action="{{ action }}" method="{% if method %}{{ method }} {% else %}post{% endif %}" id="{{ id }}" class="rounded-xl bg-white p-6 w-full max-w-[35rem] shadow-md {{ class }}">
+<form action="{{ action }}" method="{% if method %}{{ method }} {% else %}post{% endif %}" id="{{ id }}" class="rounded-xl p-6 w-full max-w-[35rem] {{ class }}">
+    {% if title %}
     <header>
-        <h2 class="mb-9 text-2xl text-gray-700">{% if title %}{{ title }}{% else %}Form{% endif %}</h2>
+        <h2 class="mb-9 text-2xl text-gray-700">{{ title }}</h2>
     </header>
+    {% endif %}
     {% csrf_token %}
     <div class="grid gap-y-2">{{ slot }}</div>
     <footer class="flex gap-x-3 mt-6 justify-end {{ footer_class }}">

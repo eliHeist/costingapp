@@ -48,7 +48,7 @@ class LaborFeesEditView(View):
 
         # print(data)
 
-        # if there is no id create a new item costing otherwise update the exixting one
+        # if there is no id create a new item costing otherwise update the existing one
         if data.get("id") == "":
             item = ItemCosting(
                 name=data.get("name"),

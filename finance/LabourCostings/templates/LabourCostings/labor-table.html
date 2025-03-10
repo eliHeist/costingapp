@@ -11,7 +11,7 @@
                 <c-slot name="links">
                     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/nocss/litepicker.js"></script>
                 </c-slot>
-                <c-ui.dialog label="Add a Table" id="add-table">
+                <c-ui.dialog label="Add a Table" id="add-table" size="sm">
                     <form action="{% url 'LabourCostings:labor-table-create' %}" method="post"
                         class="grid gap-6 @container">
                         <p>

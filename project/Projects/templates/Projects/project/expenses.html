@@ -5,18 +5,8 @@
 <div>
     <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
         <div class="flex gap-x-6 gap-y-3 justify-end">
-            <form action="" method="post" x-data="{
-                requiredFormsFilled(){
-                    let description_input = this.$refs.description
-                    if (!description_input.value.length > 3) return false
-                    let amount_input = this.$refs.amount
-                    if (!amount_input.value.length > 2) return false
-                    let categories = this.$refs.form_fields.querySelectorAll('.selected_tag')
-                    if (!categories.length > 1) return false
-                    return true
-                },
-            }">
-                <c-ui.drawer title="New expense form">
+            <form action="" method="post">
+                <c-ui.drawer title="Add an expense">
                     <c-slot name="trigger_button">
                         <c-ui.button id="{{ button_id }}" text="Add an expense" icon="fas fa-plus" variant="ghost" size="md" @click="open = true" />
                     </c-slot>
@@ -35,6 +25,7 @@
                         <c-projects.categoriespicker />
                     </div>
                     
+                    <c-ui.form_elements.multiselect.root data_name="expense_categories" label="Categories" />
                     <c-slot name="footer">
                         <c-ui.button text="Save" icon="fas fa-save" variant="primary" size="md" type="submit" x-bind:disabled="requiredFormsFilled" />
                     </c-slot>

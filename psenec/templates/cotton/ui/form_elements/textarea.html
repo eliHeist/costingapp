@@ -1,14 +1,14 @@
 <div class="grid {{ class }}">
     {% if label %}
-    <label for="name" class="block text-sm font-semibold text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
+    <label for="name" class="block text-sm font-bold mb-2 text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
     {% endif %}
-    <div class="flex items-start border-b-2 border-gray-300 transition-all hover:border-gray-400 focus-within:border-primary focus-within:hover:border-primary">
+    <div class="flex items-start border border-gray-300 focus:border-gray-400 rounded-md {{ field_class }}">
         {% if icon %}
-        <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
+        <div class="h-12 w-12 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
         {% else %}
         <div class="p-0"></div>
         {% endif %}
-        <textarea name="{{ name }}" id="{{ id }}" class="ring-transparent focus-within:outline-none text-sm flex-1 mr-2 my-2 bg-transparent w-full {{ input_class }}" rows="{% if rows %}{{ rows }}{% else %}1{% endif %}" placeholder="{{ placeholder }}" {{ vars|safe }} {% if required %}required{% endif %}>{{ value }}</textarea>
+        <textarea name="{{ name }}" id="{{ id }}" class="ring-transparent focus-within:outline-none text-sm flex-1 mr-2 my-2 bg-transparent w-full {{ input_class }}" rows="{% if rows %}{{ rows }}{% else %}2{% endif %}" placeholder="{{ placeholder }}" {{ vars|safe }} {% if required %}required{% endif %}>{{ value }}</textarea>
     </div>
     {% if errors %}
     <p class="text-red-600">{{ errors }}</p>

@@ -29,8 +29,9 @@
             <c-ui.form_elements.input label="Length" name="length" value="{{ item.length }}" type="number" step="0.01" class="col-span-1 @4xl:col-span-4" />
             <c-ui.form_elements.select label="Type" required="true" name="costing" class="col-span-1 @2xl:col-span-2 @4xl:col-span-4">
                 {% for type in table.item_costings.all %}
-                <option value="{{ type.pk }}">
-                    {{ type.name }} ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }})
+                <option value="{{ type.pk }}" {% if type == item.costing %}selected{% endif %}>
+                    {{ type.name }} 
+                    <!-- ({{ type.min_height }}*{{ type.min_length }}) - ({{ type.max_height }}*{{ type.max_length }}) -->
                 </option>
                 {% endfor %}
             </c-ui.form_elements.select>

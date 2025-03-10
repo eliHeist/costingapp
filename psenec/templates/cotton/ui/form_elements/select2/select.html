@@ -72,16 +72,16 @@
     }
 }">{% comment %}{% endcomment %}
     {% if label %}
-    <label for="name" class="block text-sm font-medium text-gray-700">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
+    <label for="name" class="block text-sm font-bold text-gray-700 mb-2">{{ label }} {% if required %}<span class="text-red-500">*</span>{% endif %}</label>
     {% endif %}
-    <div class="flex items-center border-b-2 border-gray-300 transition-all hover:border-gray-400 focus-within:border-primary focus-within:hover:border-primary relative">
+    <div class="flex items-center border border-gray-300 focus-within:border-gray-500 rounded-md relative {{ field_class }}">
         {% if icon %}
-        <div class="h-10 w-10 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
+        <div class="h-12 w-12 grid place-content-center"><i class="{{ icon }} text-grey-500"></i></div>
         {% else %}
         <div class="p-0"></div>
         {% endif %}
         <!-- search field -->
-        <input type="text" class="h-10 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" placeholder="Search here" 
+        <input type="text" class="h-12 ring-transparent focus-within:outline-none text-sm flex-1 mr-2 bg-transparent w-full {{ input_class }}" placeholder="Search here" 
             x-model="search_string"
             :disabled="selected_element != null"
             @keyup="handleSearch(event)"
@@ -102,14 +102,14 @@
             <div class="grid gap-y-1 all_options overflow-y-auto" x-ref="options">{{ options }}</div>
         </div>
         <!-- clear selection -->
-        <button type="button" class="h-10 w-10 rounded-full grid place-content-center transition-all hover:bg-light/40" @click="clearSelection()" x-show="selected_element!=null"><i class="text-gray-500 fas fa-xmark"></i></button>
+        <button type="button" class="h-12 w-12 rounded-full grid place-content-center transition-all hover:bg-light/40" @click="clearSelection()" x-show="selected_element!=null"><i class="text-gray-500 fas fa-xmark"></i></button>
         <!-- open options -->
         <button type="button" @click="show_options = !show_options" x-show="selected_element==null" 
-            class="h-10 w-10 rounded-full grid place-content-center transition-all hover:bg-primary/20">
+            class="h-12 w-12 rounded-full grid place-content-center transition-all hover:bg-primary/5">
             <i class="text-gray-500 fas fa-chevron-down transition-all" :class="show_options ? 'rotate-180' : 'rotate-0'"></i>
         </button>
         {% if action %}
-        <button type="button" class="h-10 w-10 grid place-content-center" x-show="selected_element==null" @click="show_options=false;{{ click_commands }}" {{ action_vars|safe }}>
+        <button type="button" class="h-12 w-12 grid place-content-center" x-show="selected_element==null" @click="show_options=false;{{ click_commands }}" {{ action_vars|safe }}>
             <i class="text-primary {{ action_icon }}"></i></button>
         {% endif %}
     </div>

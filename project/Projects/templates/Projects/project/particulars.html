@@ -56,14 +56,7 @@
         <div class="@container grid gap-6 p-6 rounded-lg bg-lighter">
             <div class="flex gap-x-6 gap-y-3 flex-wrap">
                 <c-ui.button text="Add a group" icon="fas fa-plus" variant="ghost" vars="@click='show_form = !show_form'" size="md" />
-                {% comment %}
-                <!-- <c-ui.button text="View Types" icon="fas fa-eye" variant="outline-grey" vars="@click='show_form = !show_form'" size="md" />
-                <c-ui.drawer title="Active Labor Table" button_id="drawerTrigger1" button_icon="fas fa-table" trigger_text="View Active Labor Table" button_variant="outline-grey">
-                    {% if table %}
-                    {% include 'LabourCostings/components/labor-table.html' %}
-                    {% endif %}
-                </c-ui.drawer> -->
-                {% endcomment %}
+                
             </div>
             <div x-collapse x-cloak x-show="show_form">
                 <div class="grid gap-6 @3xl:grid-cols-2">
